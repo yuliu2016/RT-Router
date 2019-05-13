@@ -3,12 +3,25 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.31"
     `maven-publish`
+    kotlin("jvm") version "1.3.31"
+    id("com.github.gmazzo.buildconfig") version "1.5.0"
 }
 
+val kProjectVersion = "0.0.1"
+
 group = "ca.warp7.rt.router"
-version = "0.0.1"
+version = kProjectVersion
+
+val kRootDir = ".rt-router"
+val kStorePath = "$kRootDir/$kProjectVersion/"
+
+buildConfig {
+    forClass("ca.warp7.rt.router.internal", "BuildConfig") {
+        buildConfigField("String", "kProjectVersion", "\"$kProjectVersion\"")
+        buildConfigField("String", "kStorePath", "\"$kStorePath\"")
+    }
+}
 
 repositories {
     mavenCentral()
@@ -21,12 +34,14 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
     // Kotlin Coroutines
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.2.1")
     // HTTP Requests Library
     implementation(group = "com.github.kittinunf.fuel", name = "fuel", version = "2.0.1")
     // JSON Library
     implementation(group = "com.beust", name = "klaxon", version = "5.0.5")
+    // Test Libraries
     testImplementation(kotlin("test"))
 }
 
