@@ -8,6 +8,14 @@ plugins {
     id("com.github.gmazzo.buildconfig") version "1.5.0"
 }
 
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.3.31")
+    }
+}
+
 val kProjectVersion = "0.0.1"
 
 group = "ca.warp7.rt.router"
@@ -59,8 +67,12 @@ dependencies {
     implementation(kotlin("reflect"))
     // Kotlin Coroutines
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.2.1")
+    // Kotlin Serialization
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = "0.11.0")
     // HTTP Requests Library
     implementation(group = "com.github.kittinunf.fuel", name = "fuel", version = "2.0.1")
+    // Support Library to integrate Fuel and Serialization
+    implementation(group = "com.github.kittinunf.fuel", name = "fuel-kotlinx-serialization", version = "2.0.1")
     // JSON Library
     implementation(group = "com.beust", name = "klaxon", version = "5.0.5")
     // DataFrame Library
@@ -72,6 +84,10 @@ dependencies {
 val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
+}
+
+tasks.jar {
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 }
 
 publishing {
