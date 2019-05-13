@@ -27,7 +27,7 @@ val kBuildConfigPackage = "ca.warp7.rt.router.internal"
 val kBuildConfigClass = "BuildConfig"
 
 val kRootDir = ".rt-router"
-val kStorePath = "$kRootDir/$kProjectVersion/"
+val kStorePath = "/$kRootDir/$kProjectVersion/"
 val kPropertiesFile = "router.properties"
 
 

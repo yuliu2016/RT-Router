@@ -12,7 +12,7 @@ class TBATest {
     @Test
     fun basicRequestTest() {
         val tba = TBAV3Client(key!!)
-        val request = tba.synchronousGet("status")
+        val request = tba.synchronousGet("/status")
         assertTrue(request.isNotEmpty())
     }
 }

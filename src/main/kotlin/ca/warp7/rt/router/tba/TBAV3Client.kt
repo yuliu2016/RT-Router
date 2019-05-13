@@ -6,6 +6,6 @@ class TBAV3Client(private val authKey: String) {
 
     fun synchronousGet(request: String): String{
         return (kAPIRoot + request).httpGet()
-            .header("X-TBA-Auth-Key", authKey).responseString().third.component1() ?: ""
+            .header("X-TBA-Auth-Key" to authKey, "User-Agent" to "Hi").responseString().third.get()
     }
 }
