@@ -16,6 +16,20 @@ version = kProjectVersion
 val kRootDir = ".rt-router"
 val kStorePath = "$kRootDir/$kProjectVersion/"
 
+
+tasks {
+    val checkInKey = create("checkInKey") {
+        val key = project.properties["tbaKey"] ?: ""
+        buildConfig {
+            forClass("ca.warp7.rt.router.internal", "BuildConfig") {
+                buildConfigField("String", "tbaKey", "\"$key\"")
+            }
+        }
+    }
+
+    test { dependsOn(checkInKey) }
+}
+
 buildConfig {
     forClass("ca.warp7.rt.router.internal", "BuildConfig") {
         buildConfigField("String", "kProjectVersion", "\"$kProjectVersion\"")
