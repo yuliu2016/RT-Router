@@ -13,16 +13,30 @@ val kProjectVersion = "0.0.1"
 group = "ca.warp7.rt.router"
 version = kProjectVersion
 
+val Any?.quoted get() = "\"$this\""
+
+val kBuildConfigPackage = "ca.warp7.rt.router.internal"
+val kBuildConfigClass = "BuildConfig"
+
 val kRootDir = ".rt-router"
 val kStorePath = "$kRootDir/$kProjectVersion/"
+val kPropertiesFile = "router.properties"
 
+
+buildConfig {
+    forClass(kBuildConfigPackage, kBuildConfigClass) {
+        buildConfigField("String", "kProjectVersion", kProjectVersion.quoted)
+        buildConfigField("String", "kStorePath", kStorePath.quoted)
+        buildConfigField("String", "kPropertiesFile", kPropertiesFile.quoted)
+    }
+}
 
 tasks {
     val checkInKey = create("checkInKey") {
-        val key = project.properties["tbaKey"] ?: ""
+        val key = project.properties["tbaKey"]
         buildConfig {
-            forClass("ca.warp7.rt.router.internal", "BuildConfig") {
-                buildConfigField("String", "tbaKey", "\"$key\"")
+            forClass(kBuildConfigPackage, kBuildConfigClass) {
+                buildConfigField("String", "tbaKey", key.quoted)
             }
         }
     }
@@ -30,12 +44,6 @@ tasks {
     test { dependsOn(checkInKey) }
 }
 
-buildConfig {
-    forClass("ca.warp7.rt.router.internal", "BuildConfig") {
-        buildConfigField("String", "kProjectVersion", "\"$kProjectVersion\"")
-        buildConfigField("String", "kStorePath", "\"$kStorePath\"")
-    }
-}
 
 repositories {
     mavenCentral()
@@ -55,6 +63,8 @@ dependencies {
     implementation(group = "com.github.kittinunf.fuel", name = "fuel", version = "2.0.1")
     // JSON Library
     implementation(group = "com.beust", name = "klaxon", version = "5.0.5")
+    // DataFrame Library
+    implementation(group = "de.mpicbg.scicomp", name = "krangl", version = "0.11")
     // Test Libraries
     testImplementation(kotlin("test"))
 }
@@ -65,17 +75,17 @@ val sourcesJar by tasks.registering(Jar::class) {
 }
 
 publishing {
-    repositories {
-        maven {
-            // change to point to your repo, e.g. http://my.org/repo
-            url = uri("$buildDir/repo")
-        }
-    }
     publications {
         register("mavenJava", MavenPublication::class) {
             from(components["java"])
             artifact(sourcesJar.get())
             artifactId = "rt-router"
+        }
+    }
+    repositories {
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            url = uri("$buildDir/repo")
         }
     }
 }
