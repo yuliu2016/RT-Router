@@ -1,7 +1,7 @@
 .gradle/
 build/
 gradle.properties
-.iml
+*.iml
 
 # For Mac users
 

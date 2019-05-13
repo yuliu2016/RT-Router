@@ -30,12 +30,14 @@ val kRootDir = ".rt-router"
 val kStorePath = "/$kRootDir/$kProjectVersion/"
 val kPropertiesFile = "router.properties"
 
+val kUserAgent = "${project.name} / $kProjectVersion"
 
 buildConfig {
     forClass(kBuildConfigPackage, kBuildConfigClass) {
         buildConfigField("String", "kProjectVersion", kProjectVersion.quoted)
         buildConfigField("String", "kStorePath", kStorePath.quoted)
         buildConfigField("String", "kPropertiesFile", kPropertiesFile.quoted)
+        buildConfigField("String", "kUserAgent", kUserAgent.quoted)
     }
 }
 

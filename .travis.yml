@@ -2,4 +2,6 @@ language: java
 
 install:
   - chmod +x ./gradlew
+  - echo "tbaKey=$tbaKey" > gradle.properties
+  - cat gradle.properties
   - ./gradlew --version

@@ -32,6 +32,10 @@ object FileSystem {
         if (save) configFile.writeText(properties.toJsonString(prettyPrint = true))
     }
 
+    fun getUserAgent(): String {
+        return BuildConfig.kUserAgent
+    }
+
     @Suppress("SENSELESS_COMPARISON")
     fun getTBAKey(): String? {
         val configKey = BuildConfig.tbaKey

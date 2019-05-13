@@ -11,7 +11,7 @@ class TBATest {
 
     @Test
     fun basicRequestTest() {
-        val tba = TBAV3Client(key!!)
+        val tba = TBAV3Client(key!!, FileSystem.getUserAgent())
         val request = tba.synchronousGet("/status")
         assertTrue(request.isNotEmpty())
     }
