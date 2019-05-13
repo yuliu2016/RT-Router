@@ -79,6 +79,7 @@ dependencies {
     implementation(group = "de.mpicbg.scicomp", name = "krangl", version = "0.11")
     // Test Libraries
     testImplementation(kotlin("test"))
+    testImplementation(group = "junit", name = "junit", version = "4.12")
 }
 
 val sourcesJar by tasks.registering(Jar::class) {
