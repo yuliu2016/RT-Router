@@ -16,7 +16,9 @@ interface RoutingContext {
 
     val isSingle: Boolean
 
-    var isEager: Boolean
+    val isEager: Boolean
+
+    val typing: Map<String, ColumnType>
 
     val data: Map<String, List<Any?>>
 
@@ -26,7 +28,9 @@ interface RoutingContext {
 
     val changed: Map<String, List<Any?>>
 
-    val typing: Map<String, ColumnType>
+    fun toEager(): RoutingContext
+
+    fun toLazy(): RoutingContext
 
     fun update()
 
