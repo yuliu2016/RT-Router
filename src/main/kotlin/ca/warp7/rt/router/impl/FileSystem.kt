@@ -1,4 +1,4 @@
-package ca.warp7.rt.router.internal
+package ca.warp7.rt.router.impl
 
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser

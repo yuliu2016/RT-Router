@@ -23,7 +23,7 @@ version = kProjectVersion
 
 val Any?.quoted get() = "\"$this\""
 
-val kBuildConfigPackage = "ca.warp7.rt.router.internal"
+val kBuildConfigPackage = "ca.warp7.rt.router.impl"
 val kBuildConfigClass = "BuildConfig"
 
 val kRootDir = ".rt-router"
