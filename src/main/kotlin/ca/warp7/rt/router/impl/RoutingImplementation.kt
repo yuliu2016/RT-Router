@@ -9,7 +9,7 @@ private val azimuth = Azimuth()
 private var routingIndex = 0
 private var endpoints: MutableList<Pair<Any, RoutingDelegate>> = mutableListOf()
 
-fun routeImpl(endpoint: List<Any>): RoutingDelegate {
+fun routing0(endpoint: List<Any>): RoutingDelegate {
     endpoints.forEach {
         if (it.first === endpoint) return it.second
     }
