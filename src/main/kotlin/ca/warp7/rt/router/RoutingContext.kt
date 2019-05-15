@@ -14,8 +14,6 @@ interface RoutingContext {
 
     val hasNewData: Boolean
 
-    val isSingle: Boolean
-
     val typing: Map<String, ColumnType>
 
     val data: Map<String, List<Any?>>
@@ -29,14 +27,6 @@ interface RoutingContext {
     fun update()
 
     fun listen(listener: () -> Unit)
-
-    fun progress(listener: () -> Unit)
-
-    fun getFirst(): Any
-
-    fun setAll(value: Any)
-
-    fun select(columns: Set<String>, start: Int, end: Int): RoutingContext
 
     fun recycle()
 }

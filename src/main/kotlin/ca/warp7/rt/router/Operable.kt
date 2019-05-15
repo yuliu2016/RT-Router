@@ -6,7 +6,7 @@ interface Operable {
     operator fun plus(x: Any): Operable
     operator fun minus(x: Any): Operable
     operator fun rangeTo(x: Any): Operable
-    operator fun get(x: Any): Operable
+    operator fun get(vararg x: Any): Operable
     operator fun set(k: Any, v: Any): Operable
     operator fun compareTo(x: Any): Int
     fun letValue(f: (Any) -> Any): Operable
