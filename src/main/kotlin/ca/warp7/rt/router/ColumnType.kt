@@ -12,5 +12,6 @@ enum class ColumnType {
     Confidence,
     Image,
     Video,
-    URL
+    URL,
+    Custom
 }
