@@ -38,6 +38,7 @@ buildConfig {
         buildConfigField("String", "kStorePath", kStorePath.quoted)
         buildConfigField("String", "kPropertiesFile", kPropertiesFile.quoted)
         buildConfigField("String", "kUserAgent", kUserAgent.quoted)
+        buildConfigField("String", "kProjectDir", projectDir.absolutePath.quoted)
     }
 }
 
