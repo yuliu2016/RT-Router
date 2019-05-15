@@ -1,5 +1,7 @@
 package ca.warp7.rt.router
 
+import ca.warp7.rt.router.util.ColumnType
+
 // replaces Context
 
 interface RoutingContext {

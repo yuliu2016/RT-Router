@@ -1,14 +1,15 @@
 package ca.warp7.rt.router.impl
 
-import ca.warp7.rt.router.ContextDescriptor
+import ca.warp7.rt.router.util.ContextDescriptor
 
 private val descriptors: List<ContextDescriptor> = listOf()
 
 private var routingIndex = 0
 
-fun routing0(endpoint: List<Any>): List<ContextDescriptor> {
+fun routing0(endpoints: List<Any>): List<ContextDescriptor> {
+    checkEndpointLength(endpoints)
     val descriptor0 = descriptors.subList(0, ++routingIndex)
-    reportEndpointState(endpoint)
+    reportEndpointState(endpoints)
     return descriptor0
 }
 
@@ -17,6 +18,11 @@ const val kLengthThreshold = 10
 fun checkedVararg(v: List<Any>): List<Any> {
     if (v.size > kLengthThreshold) return listOf(v)
     return v
+}
+
+fun checkEndpointLength(endpoint: List<Any>) {
+    if (endpoint.size > kLengthThreshold)
+        reportHeadlessState(endpoint)
 }
 
 fun reportEndpointState(v: Any) {

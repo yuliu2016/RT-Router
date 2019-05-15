@@ -1,4 +1,6 @@
-package ca.warp7.rt.router
+package ca.warp7.rt.router.util
+
+import ca.warp7.rt.router.RoutingDelegate
 
 data class ContextDescriptor(
     val contextName: String,

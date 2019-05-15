@@ -1,4 +1,4 @@
-package ca.warp7.rt.router
+package ca.warp7.rt.router.util
 
 enum class ColumnType {
     Team,

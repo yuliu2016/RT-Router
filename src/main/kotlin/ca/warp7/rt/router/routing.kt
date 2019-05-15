@@ -5,6 +5,7 @@ package ca.warp7.rt.router
 import ca.warp7.rt.router.impl.checkedVararg
 import ca.warp7.rt.router.impl.reportHeadlessState
 import ca.warp7.rt.router.impl.routing0
+import ca.warp7.rt.router.util.ColumnType
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -23,11 +24,11 @@ object routing {
     }
 
     private val transitives: MutableMap<String, ReadOnlyProperty<Any?, RoutingContext>> = mutableMapOf()
-    private val transitiveMutex = Any()
+    private val transitiveLock = Any()
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): RoutingContext {
         val name = property.name
-        return synchronized(transitiveMutex) {
+        return synchronized(transitiveLock) {
             (transitives[name] ?: (get(name) as ReadOnlyProperty<Any?, RoutingContext>)
                 .also { transitives[name] = it }).getValue(thisRef, property)
         }
