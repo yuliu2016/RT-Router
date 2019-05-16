@@ -6,25 +6,17 @@ import ca.warp7.rt.router.util.ColumnType
 
 interface RoutingContext {
 
-    val contextName: String
+    val name: String
 
     val isActive: Boolean
 
     val isDefined: Boolean
-
-    val hasData: Boolean
 
     val hasNewData: Boolean
 
     val typing: Map<String, ColumnType>
 
     val data: Map<String, List<Any?>>
-
-    val added: Map<String, List<Any?>>
-
-    val deleted: Map<String, List<Any?>>
-
-    val changed: Map<String, List<Any?>>
 
     fun update()
 

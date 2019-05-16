@@ -6,7 +6,7 @@ import ca.warp7.rt.router.impl.checkedVararg
 import ca.warp7.rt.router.impl.reportHeadlessState
 import ca.warp7.rt.router.impl.routing0
 import ca.warp7.rt.router.util.ColumnType
-import kotlin.properties.ReadOnlyProperty
+import ca.warp7.rt.router.util.DelegateOf
 import kotlin.reflect.KProperty
 
 object routing {
@@ -23,27 +23,27 @@ object routing {
         return routing0(listOf(by))
     }
 
-    private val transitives: MutableMap<String, ReadOnlyProperty<Any?, RoutingContext>> = mutableMapOf()
+    private val transitives: MutableMap<String, DelegateOf<RoutingContext>> = mutableMapOf()
     private val transitiveLock = Any()
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): RoutingContext {
         val name = property.name
         return synchronized(transitiveLock) {
-            (transitives[name] ?: (get(name) as ReadOnlyProperty<Any?, RoutingContext>)
+            (transitives[name] ?: (get(name) as DelegateOf<RoutingContext>)
                 .also { transitives[name] = it }).getValue(thisRef, property)
         }
     }
 
-    val simpleContext: ReadOnlyProperty<Any?, SimpleContext> get() = SimpleContextDelegate()
+    val simpleContext: DelegateOf<SimpleContext> get() = SimpleContextDelegate()
 
-    class SimpleContextDelegate : ReadOnlyProperty<Any?, SimpleContext> {
+    class SimpleContextDelegate : DelegateOf<SimpleContext> {
         private var simpleContext: SimpleContext? = null
         override fun getValue(thisRef: Any?, property: KProperty<*>): SimpleContext {
             val current = simpleContext
             val name = property.name
             return if (current == null) {
                 val inst = SimpleRoutingContext(name)
-                val delegateRef = routing[inst]
+                val delegateRef = get(inst)
                 val newRef = SimpleContextImpl(
                     delegateRef,
                     mutableMapOf(),
@@ -68,25 +68,17 @@ object routing {
         }
     }
 
-    private class SimpleRoutingContext(override val contextName: String) : RoutingContext {
+    private class SimpleRoutingContext(override val name: String) : RoutingContext {
 
         lateinit var simpleContext: SimpleContextImpl
 
         override var isActive: Boolean = false
         override val isDefined: Boolean = true
-        override val hasData: Boolean
-            get() = simpleContext.data.isEmpty()
         override var hasNewData: Boolean = false
         override val typing: Map<String, ColumnType>
             get() = simpleContext.typing
         override val data: Map<String, List<Any?>>
             get() = simpleContext.data
-        override val added: Map<String, List<Any?>>
-            get() = mapOf()
-        override val deleted: Map<String, List<Any?>>
-            get() = mapOf()
-        override val changed: Map<String, List<Any?>>
-            get() = mapOf()
 
         override fun update() {
         }

@@ -1,6 +1,6 @@
 package ca.warp7.rt.router
 
-import kotlin.properties.ReadOnlyProperty
+import ca.warp7.rt.router.util.DelegateOf
 
-interface RoutingDelegate : ReadOnlyProperty<Any?, RoutingContext>,
-        (RoutingAdapter.() -> Unit) -> ReadOnlyProperty<Any?, RoutingContext>
+interface RoutingDelegate : DelegateOf<RoutingContext>,
+        (RoutingAdapter.() -> Unit) -> DelegateOf<RoutingContext>
