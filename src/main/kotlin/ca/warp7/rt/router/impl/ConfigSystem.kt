@@ -4,7 +4,7 @@ import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import java.io.File
 
-object FileSystem {
+object ConfigSystem {
 
     private val storePath = File(System.getProperty("user.home") + BuildConfig.kStorePath)
 
