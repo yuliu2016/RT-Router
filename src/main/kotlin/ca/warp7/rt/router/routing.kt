@@ -2,9 +2,7 @@
 
 package ca.warp7.rt.router
 
-import ca.warp7.rt.router.impl.checkedVararg
-import ca.warp7.rt.router.impl.reportHeadlessState
-import ca.warp7.rt.router.impl.routing0
+import ca.warp7.rt.router.impl._byRoute
 import ca.warp7.rt.router.util.ColumnType
 import ca.warp7.rt.router.util.DelegateOf
 import kotlin.reflect.KProperty
@@ -13,14 +11,21 @@ object routing {
 
     operator fun get(vararg endpoints: Any): RoutingDelegate {
         val endpointList = endpoints.toList()
-        val res = routing0(checkedVararg(endpointList))
+        val res = _byRoute(checkedVararg(endpointList))
         val first = res.firstOrNull()
         if (first?.isDefined == true) return first.delegate
-        reportHeadlessState(endpointList)
+        throw IllegalStateException("Unable to route into $endpointList")
     }
 
     fun search(by: String): List<Any> {
-        return routing0(listOf(by))
+        return _byRoute(listOf(by))
+    }
+
+    private const val kLengthThreshold: Int = 10
+
+    private fun checkedVararg(v: List<Any>): List<Any> {
+        if (v.size > kLengthThreshold) return listOf(v)
+        return v
     }
 
     private val transitives: MutableMap<String, DelegateOf<RoutingContext>> = mutableMapOf()

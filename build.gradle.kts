@@ -38,7 +38,6 @@ buildConfig {
         buildConfigField("String", "kStorePath", kStorePath.quoted)
         buildConfigField("String", "kPropertiesFile", kPropertiesFile.quoted)
         buildConfigField("String", "kUserAgent", kUserAgent.quoted)
-        buildConfigField("String", "kProjectDir", projectDir.absolutePath.quoted)
     }
 }
 
@@ -88,10 +87,7 @@ dependencies {
 val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
-}
-
-tasks.jar {
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    exclude("ca/warp7/rt/router/impl/**/*.kt")
 }
 
 publishing {
