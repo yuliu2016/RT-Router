@@ -11,6 +11,8 @@ import kotlin.concurrent.withLock
 private val mutex = ReentrantLock()
 private val control: RoutingControl = TODO()
 
+private val types = ColumnType.values().map { it.name }
+
 private inline fun mutexControl(action: RoutingControl.() -> List<ContextDescriptor>): List<ContextDescriptor> {
     return mutex.withLock {
         action(control)
@@ -42,6 +44,18 @@ fun _byRoute(endpoints: List<Any>): List<ContextDescriptor> {
             routingAgent
         })
     }
+
+    val columnTypes = endpoints.mapNotNull {
+        it as? ColumnType
+    }
+    val columns = endpoints.mapNotNull {
+        it as? Column
+    }.toMutableList()
+    if (columnTypes.isNotEmpty()) {
+        columns.addAll(columnTypes.map {
+            it.asColumn()
+        })
+    }
     val strings = endpoints.mapNotNull {
         it as? String
     }
@@ -50,26 +64,16 @@ fun _byRoute(endpoints: List<Any>): List<ContextDescriptor> {
         if (s.forLexer()) {
             forLexer = i
             break
+        } else if (s in types) {
+            columns.add(ColumnType.valueOf(s).asColumn())
         }
     }
-    val columnTypes = endpoints.mapNotNull {
-        it as? ColumnType
-    }
-    val columns = endpoints.mapNotNull {
-        it as? Column
-    }.toMutableList()
-    if (columnTypes.isNotEmpty()){
-        columns.addAll(columnTypes.map {
-            it.asColumn()
-        })
-    }
-    val ranges = endpoints.mapNotNull {
-        it as? IntRange
-    }
-    assert(ranges.size < 2) {
-        "Cannot use more than 1 range"
-    }
     return mutexControl {
-        listOf()
+        when {
+            forLexer > -1 -> queryDescriptor(strings[forLexer])
+            contexts.isNotEmpty() -> contextDescriptor(contexts, columns)
+            columns.isNotEmpty() -> columnDescriptor(columns)
+            else -> listOf()
+        }
     }
 }
