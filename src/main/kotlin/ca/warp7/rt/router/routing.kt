@@ -18,7 +18,7 @@ object routing {
     }
 
     fun search(by: String): List<Any> {
-        return _byRoute(listOf(by))
+        return _byRoute(by)
     }
 
     private const val kLengthThreshold: Int = 10
