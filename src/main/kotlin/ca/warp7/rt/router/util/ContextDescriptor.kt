@@ -6,5 +6,6 @@ data class ContextDescriptor(
     val name: String,
     val tokens: List<String>,
     val delegate: RoutingDelegate,
-    val isDefined: Boolean
+    val isDefined: Boolean,
+    val isTransformed: Boolean
 )

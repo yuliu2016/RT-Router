@@ -11,7 +11,7 @@ object routing {
 
     operator fun get(vararg endpoints: Any): RoutingDelegate {
         val endpointList = endpoints.toList()
-        val res = _byRoute(checkedVararg(endpointList))
+        val res = _byRoute(endpointList)
         val first = res.firstOrNull()
         if (first?.isDefined == true) return first.delegate
         throw IllegalStateException("Unable to route into $endpointList")
@@ -22,11 +22,6 @@ object routing {
     }
 
     private const val kLengthThreshold: Int = 10
-
-    private fun checkedVararg(v: List<Any>): List<Any> {
-        if (v.size > kLengthThreshold) return listOf(v)
-        return v
-    }
 
     private val transitives: MutableMap<String, DelegateOf<RoutingContext>> = mutableMapOf()
     private val transitiveLock = Any()
