@@ -32,10 +32,29 @@ for k, v in paths.items():
 ##    pprint.pprint(simple_paths, io)
 ##    print(io.getvalue())
 
-k_pkg = "ca.warp7.rt.router.tba.models"
+header = """@file:Suppress("unused", "SpellCheckingInspection")
+
+package ca.warp7.rt.router.tba
+
+
+/**
+ * Represents Alliance Data
+ */
+data class Alliances<T>(
+
+    /**
+     * The Blue Alliance
+     */
+    val blue: T,
+
+    /**
+     * The Red Alliance
+     */
+    val red: T
+)
+"""
 
 template = """
-package {pkg};
 
 /**
  * {clz}
@@ -47,9 +66,8 @@ data class {clz}(
     /**
      * Raw Data Map
      */
-    raw: Map<String, Any?>{dat}
-)
-"""
+    val raw: Map<String, Any?>{dat}
+)"""
 
 t2 = """,
 
@@ -79,25 +97,47 @@ def def_2_k(k, v):
             typing = get_kk(ref_k)
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
-            typing = "Alliance<{kk}>".format(kk=get_kk(ref_k))
+            typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))
         else:
             dtype = q["type"]
             if dtype == "object":
                 typing = "Map<String, Any?>"
             elif dtype == "number":
                 typing = "Double"
-            elif dtype == "array":
-                typing = "Array<>"
             elif dtype == "string":
                 typing = "String"
             elif dtype == "integer":
                 typing = "Int"
             elif dtype == "boolean":
                 typing = "Boolean"
+            elif dtype == "array":
+                it = q["items"]
+                if "$ref" in it:
+                    ref_k = it["$ref"].split("/")[-1]
+                    typing = get_kk(ref_k)
+                else:
+                    atype = it["type"]
+                    if atype == "object":
+                        typing = "List<Map<String, Any?>>"
+                    elif atype == "number":
+                        typing = "List<Double>"
+                    elif atype == "string":
+                        typing = "List<String>"
+                    elif atype == "integer":
+                        typing = "List<Int>"
+                    elif atype == "boolean":
+                        typing = "List<Boolean>"
+                    else:
+                        print(it)
+                        raise TypeError()
             else:
                 raise TypeError()
+
+        # reserved words
+        if p == "in":
+            p = "_in"
         dat += t2.format(des=sdes, name=p, typing=typing)
-    s = template.format(pkg=k_pkg, des=des, clz=k, dat=dat)
+    s = template.format(des=des, clz=k, dat=dat)
     return s
 
 def get_kk(k):
@@ -106,12 +146,17 @@ def get_kk(k):
     kk = "".join(sl)
     return kk
 
-with io.StringIO() as io:
+##with io.StringIO() as io:
+##    for k, v in defs.items():
+##        kk = get_kk(k)
+##        print(def_2_k(kk, v), file=io)
+##    print(io.getvalue())
+
+with open("Models.kt", mode="w") as io:
+    print(header, file=io)
     for k, v in defs.items():
         kk = get_kk(k)
         print(def_2_k(kk, v), file=io)
-    print(io.getvalue())
-
     
         
 
