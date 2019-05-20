@@ -8,14 +8,6 @@ plugins {
     id("com.github.gmazzo.buildconfig") version "1.5.0"
 }
 
-buildscript {
-    repositories { jcenter() }
-
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.3.31")
-    }
-}
-
 val kProjectVersion = "0.0.1"
 
 group = "ca.warp7.rt.router"
@@ -34,7 +26,6 @@ val kUserAgent = "${project.name} / $kProjectVersion"
 
 buildConfig {
     forClass(kBuildConfigPackage, kBuildConfigClass) {
-        buildConfigField("String", "kProjectVersion", kProjectVersion.quoted)
         buildConfigField("String", "kStorePath", kStorePath.quoted)
         buildConfigField("String", "kPropertiesFile", kPropertiesFile.quoted)
         buildConfigField("String", "kUserAgent", kUserAgent.quoted)
@@ -69,12 +60,10 @@ dependencies {
     implementation(kotlin("reflect"))
     // Kotlin Coroutines
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.2.1")
-    // Kotlin Serialization
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = "0.11.0")
     // HTTP Requests Library
     implementation(group = "com.github.kittinunf.fuel", name = "fuel", version = "2.0.1")
-    // Support Library to integrate Fuel and Serialization
-    implementation(group = "com.github.kittinunf.fuel", name = "fuel-kotlinx-serialization", version = "2.0.1")
+    // Support Library to integrate Fuel and Coroutines
+    implementation(group = "com.github.kittinunf.fuel", name = "fuel-coroutines", version = "2.0.1")
     // JSON Library
     implementation(group = "com.beust", name = "klaxon", version = "5.0.5")
     // DataFrame Library
