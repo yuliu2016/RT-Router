@@ -1,4 +1,4 @@
-@file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference")
+@file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference", "UNUSED_VARIABLE")
 
 package ca.warp7.rt.router.tba
 
@@ -7,7 +7,15 @@ package ca.warp7.rt.router.tba
  */
 suspend fun TBA.getStatus(): APIStatus {
     val response = get("/status")
-    TODO()
+    return APIStatus(
+        raw = response,
+        current_season = null,
+        max_season = null,
+        is_datafeed_down = null,
+        down_events = null,
+        ios = null,
+        android = null
+    )
 }
 
 /**
@@ -80,7 +88,27 @@ suspend fun TBA.getTeam(
     team_key: String
 ): Team {
     val response = get("/team/$team_key")
-    TODO()
+    return Team(
+        raw = response,
+        key = null,
+        team_number = null,
+        nickname = null,
+        name = null,
+        city = null,
+        state_prov = null,
+        country = null,
+        address = null,
+        postal_code = null,
+        gmaps_place_id = null,
+        gmaps_url = null,
+        lat = null,
+        lng = null,
+        location_name = null,
+        website = null,
+        rookie_year = null,
+        motto = null,
+        home_championship = null
+    )
 }
 
 /**
@@ -90,7 +118,16 @@ suspend fun TBA.getTeamSimple(
     team_key: String
 ): TeamSimple {
     val response = get("/team/$team_key/simple")
-    TODO()
+    return TeamSimple(
+        raw = response,
+        key = null,
+        team_number = null,
+        nickname = null,
+        name = null,
+        city = null,
+        state_prov = null,
+        country = null
+    )
 }
 
 /**
@@ -192,7 +229,7 @@ suspend fun TBA.getTeamEventsByYearKeys(
 suspend fun TBA.getTeamEventsStatusesByYear(
     team_key: String,
     year: Int
-): Any {
+): Map<String, TeamEventStatus?> {
     val response = get("/team/$team_key/events/$year/statuses")
     TODO()
 }
@@ -249,7 +286,17 @@ suspend fun TBA.getTeamEventStatus(
     event_key: String
 ): TeamEventStatus {
     val response = get("/team/$team_key/event/$event_key/status")
-    TODO()
+    return TeamEventStatus(
+        raw = response,
+        qual = null,
+        alliance = null,
+        playoff = null,
+        alliance_status_str = null,
+        playoff_status_str = null,
+        overall_status_str = null,
+        next_match_key = null,
+        last_match_key = null
+    )
 }
 
 /**
@@ -387,7 +434,39 @@ suspend fun TBA.getEvent(
     event_key: String
 ): Event {
     val response = get("/event/$event_key")
-    TODO()
+    return Event(
+        raw = response,
+        key = null,
+        name = null,
+        event_code = null,
+        event_type = null,
+        district = null,
+        city = null,
+        state_prov = null,
+        country = null,
+        start_date = null,
+        end_date = null,
+        year = null,
+        short_name = null,
+        event_type_string = null,
+        week = null,
+        address = null,
+        postal_code = null,
+        gmaps_place_id = null,
+        gmaps_url = null,
+        lat = null,
+        lng = null,
+        location_name = null,
+        timezone = null,
+        website = null,
+        first_event_id = null,
+        first_event_code = null,
+        webcasts = null,
+        division_keys = null,
+        parent_event_key = null,
+        playoff_type = null,
+        playoff_type_string = null
+    )
 }
 
 /**
@@ -397,7 +476,20 @@ suspend fun TBA.getEventSimple(
     event_key: String
 ): EventSimple {
     val response = get("/event/$event_key/simple")
-    TODO()
+    return EventSimple(
+        raw = response,
+        key = null,
+        name = null,
+        event_code = null,
+        event_type = null,
+        district = null,
+        city = null,
+        state_prov = null,
+        country = null,
+        start_date = null,
+        end_date = null,
+        year = null
+    )
 }
 
 /**
@@ -417,7 +509,11 @@ suspend fun TBA.getEventInsights(
     event_key: String
 ): EventInsights {
     val response = get("/event/$event_key/insights")
-    TODO()
+    return EventInsights(
+        raw = response,
+        qual = null,
+        playoff = null
+    )
 }
 
 /**
@@ -427,7 +523,12 @@ suspend fun TBA.getEventOPRs(
     event_key: String
 ): EventOPRs {
     val response = get("/event/$event_key/oprs")
-    TODO()
+    return EventOPRs(
+        raw = response,
+        oprs = null,
+        dprs = null,
+        ccwms = null
+    )
 }
 
 /**
@@ -437,7 +538,9 @@ suspend fun TBA.getEventPredictions(
     event_key: String
 ): EventPredictions {
     val response = get("/event/$event_key/predictions")
-    TODO()
+    return EventPredictions(
+        raw = response
+    )
 }
 
 /**
@@ -447,7 +550,12 @@ suspend fun TBA.getEventRankings(
     event_key: String
 ): EventRanking {
     val response = get("/event/$event_key/rankings")
-    TODO()
+    return EventRanking(
+        raw = response,
+        rankings = null,
+        extra_stats_info = null,
+        sort_order_info = null
+    )
 }
 
 /**
@@ -457,7 +565,11 @@ suspend fun TBA.getEventDistrictPoints(
     event_key: String
 ): EventDistrictPoints {
     val response = get("/event/$event_key/district_points")
-    TODO()
+    return EventDistrictPoints(
+        raw = response,
+        points = null,
+        tiebreakers = null
+    )
 }
 
 /**
@@ -495,7 +607,7 @@ suspend fun TBA.getEventTeamsKeys(
  */
 suspend fun TBA.getEventTeamsStatuses(
     event_key: String
-): Any {
+): Map<String, TeamEventStatus?> {
     val response = get("/event/$event_key/teams/statuses")
     TODO()
 }
@@ -532,8 +644,8 @@ suspend fun TBA.getEventMatchesKeys(
 
 /**
  * Gets an array of Match Keys for the given event key that have timeseries data. Returns an empty array if no matches have timeseries data.
-*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
-*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+ *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+ *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getEventMatchTimeseries(
     event_key: String
@@ -559,7 +671,22 @@ suspend fun TBA.getMatch(
     match_key: String
 ): Match {
     val response = get("/match/$match_key")
-    TODO()
+    return Match(
+        raw = response,
+        key = null,
+        comp_level = null,
+        set_number = null,
+        match_number = null,
+        alliances = null,
+        winning_alliance = null,
+        event_key = null,
+        time = null,
+        actual_time = null,
+        predicted_time = null,
+        post_result_time = null,
+        score_breakdown = null,
+        videos = null
+    )
 }
 
 /**
@@ -569,13 +696,25 @@ suspend fun TBA.getMatchSimple(
     match_key: String
 ): MatchSimple {
     val response = get("/match/$match_key/simple")
-    TODO()
+    return MatchSimple(
+        raw = response,
+        key = null,
+        comp_level = null,
+        set_number = null,
+        match_number = null,
+        alliances = null,
+        winning_alliance = null,
+        event_key = null,
+        time = null,
+        predicted_time = null,
+        actual_time = null
+    )
 }
 
 /**
  * Gets an array of game-specific Match Timeseries objects for the given match key or an empty array if not available.
-*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
-*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+ *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+ *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getMatchTimeseries(
     match_key: String
