@@ -19,6 +19,7 @@ package ca.warp7.rt.router.tba
 import com.beust.klaxon.JsonObject"""
 
 ft = """
+
 /**
  * {des}
  */
@@ -145,12 +146,11 @@ def func_for_kk(k, v):
         ps = "\n    " + ",\n    ".join(pdef) + "\n"
         for p in actual_params:
             k2 = k2.replace("{" + p + "}", "$" + p)
-    body = "TODO()"
+    body = "return "
     fname = "get"
     if "$ref" in res:
         ref_k = res["$ref"].split("/")[-1]
         typing = get_kk(ref_k)
-        body = "return "
         body += obj_for_def(ref_k, "response", 4)
     elif res["type"] == "array":
         it = res["items"]
@@ -158,21 +158,23 @@ def func_for_kk(k, v):
         if "$ref" in it:
             ref_k = it["$ref"].split("/")[-1]
             typing = "List<" + get_kk(ref_k) + ">"
-            body = "return response.map { it as JsonObject }.map {\n" + " " * 8 + obj_for_def(ref_k, "it", 8) + "}"
+            body += "response.map { it as JsonObject }.map {\n" + " " * 8 + obj_for_def(ref_k, "it", 8) + "}"
         elif it["type"] == "string":
             typing = "List<String>"
-            body = "return response.map { it as String }"
+            body += "response.map { it as String }"
         elif it["type"] == "integer":
             typing = "List<Int>"
-            body = "return response.map { it as Int }"
+            body += "response.map { it as Int }"
         elif it["type"] == "object":
             typing = "List<Map<String, Any?>>"
-            body = "return response.map { it as JsonObject }"
+            body += "response.map { it as JsonObject }"
         else:
             raise TypeError()
     elif res["type"] == "object":
         ref_k = res["additionalProperties"]["$ref"].split("/")[-1]
         typing = "Map<String, " + get_kk(ref_k) + "?>"
+        body += "response.mapValues { (it as JsonObject?)!! }.mapValues {\n"
+        body += " " * 8 + obj_for_def(ref_k, "it.value", 8) + "}"
     else:
         raise TypeError()
         

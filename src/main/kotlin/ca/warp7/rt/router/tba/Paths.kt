@@ -4,6 +4,7 @@ package ca.warp7.rt.router.tba
 
 import com.beust.klaxon.JsonObject
 
+
 /**
  * Returns API status, and TBA status information.
  */
@@ -31,6 +32,7 @@ suspend fun TBA.getStatus(): APIStatus {
         }
     )
 }
+
 
 /**
  * Gets a list of `Team` objects, paginated in groups of 500.
@@ -63,6 +65,7 @@ suspend fun TBA.getTeams(
         )}
 }
 
+
 /**
  * Gets a list of short form `Team_Simple` objects, paginated in groups of 500.
  */
@@ -83,6 +86,7 @@ suspend fun TBA.getTeamsSimple(
         )}
 }
 
+
 /**
  * Gets a list of Team keys, paginated in groups of 500. (Note, each page will not have 500 teams, but will include the teams within that range of 500.)
  */
@@ -92,6 +96,7 @@ suspend fun TBA.getTeamsKeys(
     val response = getArray("/teams/$page_num/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of `Team` objects that competed in the given year, paginated in groups of 500.
@@ -125,6 +130,7 @@ suspend fun TBA.getTeamsByYear(
         )}
 }
 
+
 /**
  * Gets a list of short form `Team_Simple` objects that competed in the given year, paginated in groups of 500.
  */
@@ -146,6 +152,7 @@ suspend fun TBA.getTeamsByYearSimple(
         )}
 }
 
+
 /**
  * Gets a list Team Keys that competed in the given year, paginated in groups of 500.
  */
@@ -156,6 +163,7 @@ suspend fun TBA.getTeamsByYearKeys(
     val response = getArray("/teams/$year/$page_num/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a `Team` object for the team referenced by the given key.
@@ -187,6 +195,7 @@ suspend fun TBA.getTeam(
     )
 }
 
+
 /**
  * Gets a `Team_Simple` object for the team referenced by the given key.
  */
@@ -206,6 +215,7 @@ suspend fun TBA.getTeamSimple(
     )
 }
 
+
 /**
  * Gets a list of years in which the team participated in at least one competition.
  */
@@ -215,6 +225,7 @@ suspend fun TBA.getTeamYearsParticipated(
     val response = getArray("/team/$team_key/years_participated")
     return response.map { it as Int }
 }
+
 
 /**
  * Gets an array of districts representing each year the team was in a district. Will return an empty array if the team was never in a district.
@@ -233,6 +244,7 @@ suspend fun TBA.getTeamDistricts(
         )}
 }
 
+
 /**
  * Gets a list of year and robot name pairs for each year that a robot name was provided. Will return an empty array if the team has never named a robot.
  */
@@ -249,6 +261,7 @@ suspend fun TBA.getTeamRobots(
             team_key = it.string("team_key")
         )}
 }
+
 
 /**
  * Gets a list of all events this team has competed at.
@@ -301,6 +314,7 @@ suspend fun TBA.getTeamEvents(
         )}
 }
 
+
 /**
  * Gets a short-form list of all events this team has competed at.
  */
@@ -333,6 +347,7 @@ suspend fun TBA.getTeamEventsSimple(
         )}
 }
 
+
 /**
  * Gets a list of the event keys for all events this team has competed at.
  */
@@ -342,6 +357,7 @@ suspend fun TBA.getTeamEventsKeys(
     val response = getArray("/team/$team_key/events/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of events this team has competed at in the given year.
@@ -395,6 +411,7 @@ suspend fun TBA.getTeamEventsByYear(
         )}
 }
 
+
 /**
  * Gets a short-form list of events this team has competed at in the given year.
  */
@@ -428,6 +445,7 @@ suspend fun TBA.getTeamEventsByYearSimple(
         )}
 }
 
+
 /**
  * Gets a list of the event keys for events this team has competed at in the given year.
  */
@@ -439,6 +457,7 @@ suspend fun TBA.getTeamEventsByYearKeys(
     return response.map { it as String }
 }
 
+
 /**
  * Gets a key-value list of the event statuses for events this team has competed at in the given year.
  */
@@ -447,8 +466,65 @@ suspend fun TBA.getTeamEventsStatusesByYear(
     year: Int
 ): Map<String, TeamEventStatus?> {
     val response = get("/team/$team_key/events/$year/statuses")
-    TODO()
+    return response.mapValues { (it as JsonObject?)!! }.mapValues {
+        TeamEventStatus(
+            raw = it.value,
+            qual = it.value.obj("qual")?.let { qual ->
+                TeamEventStatusRank(
+                    raw = qual,
+                    num_teams = qual.int("num_teams"),
+                    ranking = qual.obj("ranking"),
+                    sort_order_info = qual.objList("sort_order_info"),
+                    status = qual.string("status")
+                )
+            },
+            alliance = it.value.obj("alliance")?.let { alliance ->
+                TeamEventStatusAlliance(
+                    raw = alliance,
+                    name = alliance.string("name"),
+                    number = alliance.int("number"),
+                    backup = alliance.obj("backup")?.let { backup ->
+                        TeamEventStatusAllianceBackup(
+                            raw = backup,
+                            out = backup.string("out"),
+                            _in = backup.string("in")
+                        )
+                    },
+                    pick = alliance.int("pick")
+                )
+            },
+            playoff = it.value.obj("playoff")?.let { playoff ->
+                TeamEventStatusPlayoff(
+                    raw = playoff,
+                    level = playoff.string("level"),
+                    current_level_record = playoff.obj("current_level_record")?.let { current_level_record ->
+                        WLTRecord(
+                            raw = current_level_record,
+                            losses = current_level_record.int("losses"),
+                            wins = current_level_record.int("wins"),
+                            ties = current_level_record.int("ties")
+                        )
+                    },
+                    record = playoff.obj("record")?.let { record ->
+                        WLTRecord(
+                            raw = record,
+                            losses = record.int("losses"),
+                            wins = record.int("wins"),
+                            ties = record.int("ties")
+                        )
+                    },
+                    status = playoff.string("status"),
+                    playoff_average = playoff.int("playoff_average")
+                )
+            },
+            alliance_status_str = it.value.string("alliance_status_str"),
+            playoff_status_str = it.value.string("playoff_status_str"),
+            overall_status_str = it.value.string("overall_status_str"),
+            next_match_key = it.value.string("next_match_key"),
+            last_match_key = it.value.string("last_match_key")
+        )}
 }
+
 
 /**
  * Gets a list of matches for the given team and event.
@@ -477,6 +553,7 @@ suspend fun TBA.getTeamEventMatches(
         )}
 }
 
+
 /**
  * Gets a short-form list of matches for the given team and event.
  */
@@ -504,6 +581,7 @@ suspend fun TBA.getTeamEventMatchesSimple(
         )}
 }
 
+
 /**
  * Gets a list of match keys for matches for the given team and event.
  */
@@ -514,6 +592,7 @@ suspend fun TBA.getTeamEventMatchesKeys(
     val response = getArray("/team/$team_key/event/$event_key/matches/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of awards the given team won at the given event.
@@ -533,6 +612,7 @@ suspend fun TBA.getTeamEventAwards(
             year = it.int("year")
         )}
 }
+
 
 /**
  * Gets the competition rank and status of the team at the given event.
@@ -600,6 +680,7 @@ suspend fun TBA.getTeamEventStatus(
     )
 }
 
+
 /**
  * Gets a list of awards the given team has won.
  */
@@ -617,6 +698,7 @@ suspend fun TBA.getTeamAwards(
             year = it.int("year")
         )}
 }
+
 
 /**
  * Gets a list of awards the given team has won in a given year.
@@ -636,6 +718,7 @@ suspend fun TBA.getTeamAwardsByYear(
             year = it.int("year")
         )}
 }
+
 
 /**
  * Gets a list of matches for the given team and year.
@@ -664,6 +747,7 @@ suspend fun TBA.getTeamMatchesByYear(
         )}
 }
 
+
 /**
  * Gets a short-form list of matches for the given team and year.
  */
@@ -688,6 +772,7 @@ suspend fun TBA.getTeamMatchesByYearSimple(
         )}
 }
 
+
 /**
  * Gets a list of match keys for matches for the given team and year.
  */
@@ -698,6 +783,7 @@ suspend fun TBA.getTeamMatchesByYearKeys(
     val response = getArray("/team/$team_key/matches/$year/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of Media (videos / pictures) for the given team and year.
@@ -720,6 +806,7 @@ suspend fun TBA.getTeamMediaByYear(
         )}
 }
 
+
 /**
  * Gets a list of Media (videos / pictures) for the given team and tag.
  */
@@ -740,6 +827,7 @@ suspend fun TBA.getTeamMediaByTag(
             view_url = it.string("view_url")
         )}
 }
+
 
 /**
  * Gets a list of Media (videos / pictures) for the given team, tag and year.
@@ -763,6 +851,7 @@ suspend fun TBA.getTeamMediaByTagYear(
         )}
 }
 
+
 /**
  * Gets a list of Media (social media) for the given team.
  */
@@ -782,6 +871,7 @@ suspend fun TBA.getTeamSocialMedia(
             view_url = it.string("view_url")
         )}
 }
+
 
 /**
  * Gets a list of events in the given year.
@@ -834,6 +924,7 @@ suspend fun TBA.getEventsByYear(
         )}
 }
 
+
 /**
  * Gets a short-form list of events in the given year.
  */
@@ -866,6 +957,7 @@ suspend fun TBA.getEventsByYearSimple(
         )}
 }
 
+
 /**
  * Gets a list of event keys in the given year.
  */
@@ -875,6 +967,7 @@ suspend fun TBA.getEventsByYearKeys(
     val response = getArray("/events/$year/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets an Event.
@@ -926,6 +1019,7 @@ suspend fun TBA.getEvent(
     )
 }
 
+
 /**
  * Gets a short-form Event.
  */
@@ -957,6 +1051,7 @@ suspend fun TBA.getEventSimple(
     )
 }
 
+
 /**
  * Gets a list of Elimination Alliances for the given Event.
  */
@@ -975,6 +1070,7 @@ suspend fun TBA.getEventAlliances(
         )}
 }
 
+
 /**
  * Gets a set of Event-specific insights for the given Event.
  */
@@ -988,6 +1084,7 @@ suspend fun TBA.getEventInsights(
         playoff = response.obj("playoff")
     )
 }
+
 
 /**
  * Gets a set of Event OPRs (including OPR, DPR, and CCWM) for the given Event.
@@ -1004,6 +1101,7 @@ suspend fun TBA.getEventOPRs(
     )
 }
 
+
 /**
  * Gets information on TBA-generated predictions for the given Event. Contains year-specific information. *WARNING* This endpoint is currently under development and may change at any time.
  */
@@ -1015,6 +1113,7 @@ suspend fun TBA.getEventPredictions(
         raw = response
     )
 }
+
 
 /**
  * Gets a list of team rankings for the Event.
@@ -1031,6 +1130,7 @@ suspend fun TBA.getEventRankings(
     )
 }
 
+
 /**
  * Gets a list of team rankings for the Event.
  */
@@ -1044,6 +1144,7 @@ suspend fun TBA.getEventDistrictPoints(
         tiebreakers = response.obj("tiebreakers")
     )
 }
+
 
 /**
  * Gets a list of `Team` objects that competed in the given event.
@@ -1076,6 +1177,7 @@ suspend fun TBA.getEventTeams(
         )}
 }
 
+
 /**
  * Gets a short-form list of `Team` objects that competed in the given event.
  */
@@ -1096,6 +1198,7 @@ suspend fun TBA.getEventTeamsSimple(
         )}
 }
 
+
 /**
  * Gets a list of `Team` keys that competed in the given event.
  */
@@ -1106,6 +1209,7 @@ suspend fun TBA.getEventTeamsKeys(
     return response.map { it as String }
 }
 
+
 /**
  * Gets a key-value list of the event statuses for teams competing at the given event.
  */
@@ -1113,8 +1217,65 @@ suspend fun TBA.getEventTeamsStatuses(
     event_key: String
 ): Map<String, TeamEventStatus?> {
     val response = get("/event/$event_key/teams/statuses")
-    TODO()
+    return response.mapValues { (it as JsonObject?)!! }.mapValues {
+        TeamEventStatus(
+            raw = it.value,
+            qual = it.value.obj("qual")?.let { qual ->
+                TeamEventStatusRank(
+                    raw = qual,
+                    num_teams = qual.int("num_teams"),
+                    ranking = qual.obj("ranking"),
+                    sort_order_info = qual.objList("sort_order_info"),
+                    status = qual.string("status")
+                )
+            },
+            alliance = it.value.obj("alliance")?.let { alliance ->
+                TeamEventStatusAlliance(
+                    raw = alliance,
+                    name = alliance.string("name"),
+                    number = alliance.int("number"),
+                    backup = alliance.obj("backup")?.let { backup ->
+                        TeamEventStatusAllianceBackup(
+                            raw = backup,
+                            out = backup.string("out"),
+                            _in = backup.string("in")
+                        )
+                    },
+                    pick = alliance.int("pick")
+                )
+            },
+            playoff = it.value.obj("playoff")?.let { playoff ->
+                TeamEventStatusPlayoff(
+                    raw = playoff,
+                    level = playoff.string("level"),
+                    current_level_record = playoff.obj("current_level_record")?.let { current_level_record ->
+                        WLTRecord(
+                            raw = current_level_record,
+                            losses = current_level_record.int("losses"),
+                            wins = current_level_record.int("wins"),
+                            ties = current_level_record.int("ties")
+                        )
+                    },
+                    record = playoff.obj("record")?.let { record ->
+                        WLTRecord(
+                            raw = record,
+                            losses = record.int("losses"),
+                            wins = record.int("wins"),
+                            ties = record.int("ties")
+                        )
+                    },
+                    status = playoff.string("status"),
+                    playoff_average = playoff.int("playoff_average")
+                )
+            },
+            alliance_status_str = it.value.string("alliance_status_str"),
+            playoff_status_str = it.value.string("playoff_status_str"),
+            overall_status_str = it.value.string("overall_status_str"),
+            next_match_key = it.value.string("next_match_key"),
+            last_match_key = it.value.string("last_match_key")
+        )}
 }
+
 
 /**
  * Gets a list of matches for the given event.
@@ -1142,6 +1303,7 @@ suspend fun TBA.getEventMatches(
         )}
 }
 
+
 /**
  * Gets a short-form list of matches for the given event.
  */
@@ -1165,6 +1327,7 @@ suspend fun TBA.getEventMatchesSimple(
         )}
 }
 
+
 /**
  * Gets a list of match keys for the given event.
  */
@@ -1174,6 +1337,7 @@ suspend fun TBA.getEventMatchesKeys(
     val response = getArray("/event/$event_key/matches/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets an array of Match Keys for the given event key that have timeseries data. Returns an empty array if no matches have timeseries data.
@@ -1186,6 +1350,7 @@ suspend fun TBA.getEventMatchTimeseries(
     val response = getArray("/event/$event_key/matches/timeseries")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of awards from the given event.
@@ -1204,6 +1369,7 @@ suspend fun TBA.getEventAwards(
             year = it.int("year")
         )}
 }
+
 
 /**
  * Gets a `Match` object for the given match key.
@@ -1230,6 +1396,7 @@ suspend fun TBA.getMatch(
     )
 }
 
+
 /**
  * Gets a short-form `Match` object for the given match key.
  */
@@ -1252,6 +1419,7 @@ suspend fun TBA.getMatchSimple(
     )
 }
 
+
 /**
  * Gets an array of game-specific Match Timeseries objects for the given match key or an empty array if not available.
 *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
@@ -1263,6 +1431,7 @@ suspend fun TBA.getMatchTimeseries(
     val response = getArray("/match/$match_key/timeseries")
     return response.map { it as JsonObject }
 }
+
 
 /**
  * Gets a list of districts and their corresponding district key, for the given year.
@@ -1280,6 +1449,7 @@ suspend fun TBA.getDistrictsByYear(
             year = it.int("year")
         )}
 }
+
 
 /**
  * Gets a list of events in the given district.
@@ -1332,6 +1502,7 @@ suspend fun TBA.getDistrictEvents(
         )}
 }
 
+
 /**
  * Gets a short-form list of events in the given district.
  */
@@ -1364,6 +1535,7 @@ suspend fun TBA.getDistrictEventsSimple(
         )}
 }
 
+
 /**
  * Gets a list of event keys for events in the given district.
  */
@@ -1373,6 +1545,7 @@ suspend fun TBA.getDistrictEventsKeys(
     val response = getArray("/district/$district_key/events/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of `Team` objects that competed in events in the given district.
@@ -1405,6 +1578,7 @@ suspend fun TBA.getDistrictTeams(
         )}
 }
 
+
 /**
  * Gets a short-form list of `Team` objects that competed in events in the given district.
  */
@@ -1425,6 +1599,7 @@ suspend fun TBA.getDistrictTeamsSimple(
         )}
 }
 
+
 /**
  * Gets a list of `Team` objects that competed in events in the given district.
  */
@@ -1434,6 +1609,7 @@ suspend fun TBA.getDistrictTeamsKeys(
     val response = getArray("/district/$district_key/teams/keys")
     return response.map { it as String }
 }
+
 
 /**
  * Gets a list of team district rankings for the given district.
