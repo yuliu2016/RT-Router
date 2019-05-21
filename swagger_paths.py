@@ -44,6 +44,15 @@ letfmt = """{name}.obj("{p}")?.let {{ {p} ->
 
 prim = """{name}.{typ}("{p}")"""
 
+alliance = """Alliances(
+{i8}blue = {name}.obj("blue")?.let {{ alliance ->
+{i12}{ldef}
+{i8}}},
+{i8}red = {name}.obj("blue")?.let {{ alliance ->
+{i12}{ldef}
+{i8}}}
+)"""
+
 def get_kk(k):
     sp = k.split("_")
     sl = list(map(lambda x: x[0].capitalize() + x[1:], sp))
@@ -74,7 +83,7 @@ def obj_for_def(ref_k, name, indent):
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
             typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))
-            argdat += "null"
+            argdat += alliance.format(name=name, i8=" "*p8, i12=" "*(p8 + 4), ldef = obj_for_def(ref_k, "alliance", p8 + 4))
         else:
             dtype = q["type"]
             if dtype == "object":
@@ -97,9 +106,8 @@ def obj_for_def(ref_k, name, indent):
                 if "$ref" in it:
                     ref_k = it["$ref"].split("/")[-1]
                     typing = get_kk(ref_k)
-##                    argdat += prim.format(name=name, typ="genericArray", p=p)
-##                    argdat += ".mapToList { " + p + "Item -> \n" + obj_for_def(ref_k, p + "Item", p8) + "}"
-                    argdat += "null"
+                    argdat += prim.format(name=name, typ="genericArray", p=p)
+                    argdat += "?.mapToList { " + p + "Item -> \n" + " "*p8 + obj_for_def(ref_k, p + "Item", p8) + "}"
                 else:
                     atype = it["type"]
                     if atype == "object":

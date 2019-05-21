@@ -485,7 +485,7 @@ data class Event(
     /**
      * No description available
      */
-    val webcasts: Webcast?,
+    val webcasts: List<Webcast>?,
 
     /**
      * An array of event keys for the divisions at this event.
@@ -1385,7 +1385,7 @@ data class MatchSimple(
     /**
      * A list of alliances, the teams on the alliances, and their score.
      */
-    val alliances: Alliances<MatchAlliance>?,
+    val alliances: Alliances<MatchAlliance?>?,
 
     /**
      * The color (red/blue) of the winning alliance. Will contain an empty string in the event of no winner, or a tie.
@@ -1449,7 +1449,7 @@ data class Match(
     /**
      * A list of alliances, the teams on the alliances, and their score.
      */
-    val alliances: Alliances<MatchAlliance>?,
+    val alliances: Alliances<MatchAlliance?>?,
 
     /**
      * The color (red/blue) of the winning alliance. Will contain an empty string in the event of no winner, or a tie.
@@ -2931,7 +2931,7 @@ data class Award(
     /**
      * A list of recipients of the award at the event. May have either a team_key or an awardee, both, or neither (in the case the award wasn't awarded at the event).
      */
-    val recipient_list: AwardRecipient?,
+    val recipient_list: List<AwardRecipient>?,
 
     /**
      * The year this award was won.

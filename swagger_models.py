@@ -77,7 +77,7 @@ def def_2_k(k, v):
             typing = get_kk(ref_k)
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
-            typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))
+            typing = "Alliances<{kk}?>".format(kk=get_kk(ref_k))
         else:
             dtype = q["type"]
             if dtype == "object":
@@ -94,7 +94,7 @@ def def_2_k(k, v):
                 it = q["items"]
                 if "$ref" in it:
                     ref_k = it["$ref"].split("/")[-1]
-                    typing = get_kk(ref_k)
+                    typing = "List<" + get_kk(ref_k) + ">"
                 else:
                     atype = it["type"]
                     if atype == "object":

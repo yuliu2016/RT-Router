@@ -306,7 +306,13 @@ suspend fun TBA.getTeamEvents(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = null,
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+                Webcast(
+                    raw = webcastsItem,
+                    type = webcastsItem.string("type"),
+                    channel = webcastsItem.string("channel"),
+                    file = webcastsItem.string("file")
+                )},
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
@@ -403,7 +409,13 @@ suspend fun TBA.getTeamEventsByYear(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = null,
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+                Webcast(
+                    raw = webcastsItem,
+                    type = webcastsItem.string("type"),
+                    channel = webcastsItem.string("channel"),
+                    file = webcastsItem.string("file")
+                )},
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
@@ -541,7 +553,26 @@ suspend fun TBA.getTeamEventMatches(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -569,7 +600,26 @@ suspend fun TBA.getTeamEventMatchesSimple(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -608,7 +658,12 @@ suspend fun TBA.getTeamEventAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = null,
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+                AwardRecipient(
+                    raw = recipient_listItem,
+                    team_key = recipient_listItem.string("team_key"),
+                    awardee = recipient_listItem.string("awardee")
+                )},
             year = it.int("year")
         )}
 }
@@ -694,7 +749,12 @@ suspend fun TBA.getTeamAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = null,
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+                AwardRecipient(
+                    raw = recipient_listItem,
+                    team_key = recipient_listItem.string("team_key"),
+                    awardee = recipient_listItem.string("awardee")
+                )},
             year = it.int("year")
         )}
 }
@@ -714,7 +774,12 @@ suspend fun TBA.getTeamAwardsByYear(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = null,
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+                AwardRecipient(
+                    raw = recipient_listItem,
+                    team_key = recipient_listItem.string("team_key"),
+                    awardee = recipient_listItem.string("awardee")
+                )},
             year = it.int("year")
         )}
 }
@@ -735,7 +800,26 @@ suspend fun TBA.getTeamMatchesByYear(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -763,7 +847,26 @@ suspend fun TBA.getTeamMatchesByYearSimple(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -916,7 +1019,13 @@ suspend fun TBA.getEventsByYear(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = null,
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+                Webcast(
+                    raw = webcastsItem,
+                    type = webcastsItem.string("type"),
+                    channel = webcastsItem.string("channel"),
+                    file = webcastsItem.string("file")
+                )},
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
@@ -1011,7 +1120,13 @@ suspend fun TBA.getEvent(
         website = response.string("website"),
         first_event_id = response.string("first_event_id"),
         first_event_code = response.string("first_event_code"),
-        webcasts = null,
+        webcasts = response.genericArray("webcasts")?.mapToList { webcastsItem -> 
+            Webcast(
+                raw = webcastsItem,
+                type = webcastsItem.string("type"),
+                channel = webcastsItem.string("channel"),
+                file = webcastsItem.string("file")
+            )},
         division_keys = response.stringList("division_keys"),
         parent_event_key = response.string("parent_event_key"),
         playoff_type = response.int("playoff_type"),
@@ -1291,7 +1406,26 @@ suspend fun TBA.getEventMatches(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -1318,7 +1452,26 @@ suspend fun TBA.getEventMatchesSimple(
             comp_level = it.string("comp_level"),
             set_number = it.int("set_number"),
             match_number = it.int("match_number"),
-            alliances = null,
+            alliances = Alliances(
+                blue = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                },
+                red = it.obj("blue")?.let { alliance ->
+                    MatchAlliance(
+                        raw = alliance,
+                        score = alliance.int("score"),
+                        team_keys = alliance.stringList("team_keys"),
+                        surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                        dq_team_keys = alliance.stringList("dq_team_keys")
+                    )
+                }
+),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -1365,7 +1518,12 @@ suspend fun TBA.getEventAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = null,
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+                AwardRecipient(
+                    raw = recipient_listItem,
+                    team_key = recipient_listItem.string("team_key"),
+                    awardee = recipient_listItem.string("awardee")
+                )},
             year = it.int("year")
         )}
 }
@@ -1384,7 +1542,26 @@ suspend fun TBA.getMatch(
         comp_level = response.string("comp_level"),
         set_number = response.int("set_number"),
         match_number = response.int("match_number"),
-        alliances = null,
+        alliances = Alliances(
+            blue = response.obj("blue")?.let { alliance ->
+                MatchAlliance(
+                    raw = alliance,
+                    score = alliance.int("score"),
+                    team_keys = alliance.stringList("team_keys"),
+                    surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                    dq_team_keys = alliance.stringList("dq_team_keys")
+                )
+            },
+            red = response.obj("blue")?.let { alliance ->
+                MatchAlliance(
+                    raw = alliance,
+                    score = alliance.int("score"),
+                    team_keys = alliance.stringList("team_keys"),
+                    surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                    dq_team_keys = alliance.stringList("dq_team_keys")
+                )
+            }
+),
         winning_alliance = response.string("winning_alliance"),
         event_key = response.string("event_key"),
         time = response.int("time"),
@@ -1410,7 +1587,26 @@ suspend fun TBA.getMatchSimple(
         comp_level = response.string("comp_level"),
         set_number = response.int("set_number"),
         match_number = response.int("match_number"),
-        alliances = null,
+        alliances = Alliances(
+            blue = response.obj("blue")?.let { alliance ->
+                MatchAlliance(
+                    raw = alliance,
+                    score = alliance.int("score"),
+                    team_keys = alliance.stringList("team_keys"),
+                    surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                    dq_team_keys = alliance.stringList("dq_team_keys")
+                )
+            },
+            red = response.obj("blue")?.let { alliance ->
+                MatchAlliance(
+                    raw = alliance,
+                    score = alliance.int("score"),
+                    team_keys = alliance.stringList("team_keys"),
+                    surrogate_team_keys = alliance.stringList("surrogate_team_keys"),
+                    dq_team_keys = alliance.stringList("dq_team_keys")
+                )
+            }
+),
         winning_alliance = response.string("winning_alliance"),
         event_key = response.string("event_key"),
         time = response.int("time"),
@@ -1494,7 +1690,13 @@ suspend fun TBA.getDistrictEvents(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = null,
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+                Webcast(
+                    raw = webcastsItem,
+                    type = webcastsItem.string("type"),
+                    channel = webcastsItem.string("channel"),
+                    file = webcastsItem.string("file")
+                )},
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
