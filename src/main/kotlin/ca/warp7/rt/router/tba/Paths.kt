@@ -62,7 +62,8 @@ suspend fun TBA.getTeams(
             rookie_year = it.int("rookie_year"),
             motto = it.string("motto"),
             home_championship = it.obj("home_championship")
-        )}
+        )
+    }
 }
 
 
@@ -83,7 +84,8 @@ suspend fun TBA.getTeamsSimple(
             city = it.string("city"),
             state_prov = it.string("state_prov"),
             country = it.string("country")
-        )}
+        )
+    }
 }
 
 
@@ -127,7 +129,8 @@ suspend fun TBA.getTeamsByYear(
             rookie_year = it.int("rookie_year"),
             motto = it.string("motto"),
             home_championship = it.obj("home_championship")
-        )}
+        )
+    }
 }
 
 
@@ -149,7 +152,8 @@ suspend fun TBA.getTeamsByYearSimple(
             city = it.string("city"),
             state_prov = it.string("state_prov"),
             country = it.string("country")
-        )}
+        )
+    }
 }
 
 
@@ -241,7 +245,8 @@ suspend fun TBA.getTeamDistricts(
             display_name = it.string("display_name"),
             key = it.string("key"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -259,7 +264,8 @@ suspend fun TBA.getTeamRobots(
             robot_name = it.string("robot_name"),
             key = it.string("key"),
             team_key = it.string("team_key")
-        )}
+        )
+    }
 }
 
 
@@ -306,18 +312,20 @@ suspend fun TBA.getTeamEvents(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem ->
                 Webcast(
                     raw = webcastsItem,
                     type = webcastsItem.string("type"),
                     channel = webcastsItem.string("channel"),
                     file = webcastsItem.string("file")
-                )},
+                )
+            },
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
             playoff_type_string = it.string("playoff_type_string")
-        )}
+        )
+    }
 }
 
 
@@ -350,7 +358,8 @@ suspend fun TBA.getTeamEventsSimple(
             start_date = it.string("start_date"),
             end_date = it.string("end_date"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -409,18 +418,20 @@ suspend fun TBA.getTeamEventsByYear(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem ->
                 Webcast(
                     raw = webcastsItem,
                     type = webcastsItem.string("type"),
                     channel = webcastsItem.string("channel"),
                     file = webcastsItem.string("file")
-                )},
+                )
+            },
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
             playoff_type_string = it.string("playoff_type_string")
-        )}
+        )
+    }
 }
 
 
@@ -454,7 +465,8 @@ suspend fun TBA.getTeamEventsByYearSimple(
             start_date = it.string("start_date"),
             end_date = it.string("end_date"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -534,7 +546,8 @@ suspend fun TBA.getTeamEventsStatusesByYear(
             overall_status_str = it.value.string("overall_status_str"),
             next_match_key = it.value.string("next_match_key"),
             last_match_key = it.value.string("last_match_key")
-        )}
+        )
+    }
 }
 
 
@@ -572,7 +585,7 @@ suspend fun TBA.getTeamEventMatches(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -581,7 +594,8 @@ suspend fun TBA.getTeamEventMatches(
             post_result_time = it.int("post_result_time"),
             score_breakdown = it.obj("score_breakdown"),
             videos = it.objList("videos")
-        )}
+        )
+    }
 }
 
 
@@ -619,7 +633,7 @@ suspend fun TBA.getTeamEventMatchesSimple(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -628,7 +642,8 @@ suspend fun TBA.getTeamEventMatchesSimple(
             post_result_time = it.int("post_result_time"),
             score_breakdown = it.obj("score_breakdown"),
             videos = it.objList("videos")
-        )}
+        )
+    }
 }
 
 
@@ -658,14 +673,16 @@ suspend fun TBA.getTeamEventAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem ->
                 AwardRecipient(
                     raw = recipient_listItem,
                     team_key = recipient_listItem.string("team_key"),
                     awardee = recipient_listItem.string("awardee")
-                )},
+                )
+            },
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -749,14 +766,16 @@ suspend fun TBA.getTeamAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem ->
                 AwardRecipient(
                     raw = recipient_listItem,
                     team_key = recipient_listItem.string("team_key"),
                     awardee = recipient_listItem.string("awardee")
-                )},
+                )
+            },
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -774,14 +793,16 @@ suspend fun TBA.getTeamAwardsByYear(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem ->
                 AwardRecipient(
                     raw = recipient_listItem,
                     team_key = recipient_listItem.string("team_key"),
                     awardee = recipient_listItem.string("awardee")
-                )},
+                )
+            },
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -819,7 +840,7 @@ suspend fun TBA.getTeamMatchesByYear(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -828,7 +849,8 @@ suspend fun TBA.getTeamMatchesByYear(
             post_result_time = it.int("post_result_time"),
             score_breakdown = it.obj("score_breakdown"),
             videos = it.objList("videos")
-        )}
+        )
+    }
 }
 
 
@@ -866,13 +888,14 @@ suspend fun TBA.getTeamMatchesByYearSimple(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
             predicted_time = it.int("predicted_time"),
             actual_time = it.int("actual_time")
-        )}
+        )
+    }
 }
 
 
@@ -906,7 +929,8 @@ suspend fun TBA.getTeamMediaByYear(
             preferred = it.boolean("preferred"),
             direct_url = it.string("direct_url"),
             view_url = it.string("view_url")
-        )}
+        )
+    }
 }
 
 
@@ -928,7 +952,8 @@ suspend fun TBA.getTeamMediaByTag(
             preferred = it.boolean("preferred"),
             direct_url = it.string("direct_url"),
             view_url = it.string("view_url")
-        )}
+        )
+    }
 }
 
 
@@ -951,7 +976,8 @@ suspend fun TBA.getTeamMediaByTagYear(
             preferred = it.boolean("preferred"),
             direct_url = it.string("direct_url"),
             view_url = it.string("view_url")
-        )}
+        )
+    }
 }
 
 
@@ -972,7 +998,8 @@ suspend fun TBA.getTeamSocialMedia(
             preferred = it.boolean("preferred"),
             direct_url = it.string("direct_url"),
             view_url = it.string("view_url")
-        )}
+        )
+    }
 }
 
 
@@ -1019,18 +1046,20 @@ suspend fun TBA.getEventsByYear(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem ->
                 Webcast(
                     raw = webcastsItem,
                     type = webcastsItem.string("type"),
                     channel = webcastsItem.string("channel"),
                     file = webcastsItem.string("file")
-                )},
+                )
+            },
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
             playoff_type_string = it.string("playoff_type_string")
-        )}
+        )
+    }
 }
 
 
@@ -1063,7 +1092,8 @@ suspend fun TBA.getEventsByYearSimple(
             start_date = it.string("start_date"),
             end_date = it.string("end_date"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -1120,13 +1150,14 @@ suspend fun TBA.getEvent(
         website = response.string("website"),
         first_event_id = response.string("first_event_id"),
         first_event_code = response.string("first_event_code"),
-        webcasts = response.genericArray("webcasts")?.mapToList { webcastsItem -> 
+        webcasts = response.genericArray("webcasts")?.mapToList { webcastsItem ->
             Webcast(
                 raw = webcastsItem,
                 type = webcastsItem.string("type"),
                 channel = webcastsItem.string("channel"),
                 file = webcastsItem.string("file")
-            )},
+            )
+        },
         division_keys = response.stringList("division_keys"),
         parent_event_key = response.string("parent_event_key"),
         playoff_type = response.int("playoff_type"),
@@ -1182,7 +1213,8 @@ suspend fun TBA.getEventAlliances(
             declines = it.stringList("declines"),
             picks = it.stringList("picks"),
             status = it.obj("status")
-        )}
+        )
+    }
 }
 
 
@@ -1289,7 +1321,8 @@ suspend fun TBA.getEventTeams(
             rookie_year = it.int("rookie_year"),
             motto = it.string("motto"),
             home_championship = it.obj("home_championship")
-        )}
+        )
+    }
 }
 
 
@@ -1310,7 +1343,8 @@ suspend fun TBA.getEventTeamsSimple(
             city = it.string("city"),
             state_prov = it.string("state_prov"),
             country = it.string("country")
-        )}
+        )
+    }
 }
 
 
@@ -1388,7 +1422,8 @@ suspend fun TBA.getEventTeamsStatuses(
             overall_status_str = it.value.string("overall_status_str"),
             next_match_key = it.value.string("next_match_key"),
             last_match_key = it.value.string("last_match_key")
-        )}
+        )
+    }
 }
 
 
@@ -1425,7 +1460,7 @@ suspend fun TBA.getEventMatches(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
@@ -1434,7 +1469,8 @@ suspend fun TBA.getEventMatches(
             post_result_time = it.int("post_result_time"),
             score_breakdown = it.obj("score_breakdown"),
             videos = it.objList("videos")
-        )}
+        )
+    }
 }
 
 
@@ -1471,13 +1507,14 @@ suspend fun TBA.getEventMatchesSimple(
                         dq_team_keys = alliance.stringList("dq_team_keys")
                     )
                 }
-),
+            ),
             winning_alliance = it.string("winning_alliance"),
             event_key = it.string("event_key"),
             time = it.int("time"),
             predicted_time = it.int("predicted_time"),
             actual_time = it.int("actual_time")
-        )}
+        )
+    }
 }
 
 
@@ -1494,8 +1531,8 @@ suspend fun TBA.getEventMatchesKeys(
 
 /**
  * Gets an array of Match Keys for the given event key that have timeseries data. Returns an empty array if no matches have timeseries data.
-*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
-*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+ *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+ *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getEventMatchTimeseries(
     event_key: String
@@ -1518,14 +1555,16 @@ suspend fun TBA.getEventAwards(
             name = it.string("name"),
             award_type = it.int("award_type"),
             event_key = it.string("event_key"),
-            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem -> 
+            recipient_list = it.genericArray("recipient_list")?.mapToList { recipient_listItem ->
                 AwardRecipient(
                     raw = recipient_listItem,
                     team_key = recipient_listItem.string("team_key"),
                     awardee = recipient_listItem.string("awardee")
-                )},
+                )
+            },
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -1561,7 +1600,7 @@ suspend fun TBA.getMatch(
                     dq_team_keys = alliance.stringList("dq_team_keys")
                 )
             }
-),
+        ),
         winning_alliance = response.string("winning_alliance"),
         event_key = response.string("event_key"),
         time = response.int("time"),
@@ -1606,7 +1645,7 @@ suspend fun TBA.getMatchSimple(
                     dq_team_keys = alliance.stringList("dq_team_keys")
                 )
             }
-),
+        ),
         winning_alliance = response.string("winning_alliance"),
         event_key = response.string("event_key"),
         time = response.int("time"),
@@ -1618,8 +1657,8 @@ suspend fun TBA.getMatchSimple(
 
 /**
  * Gets an array of game-specific Match Timeseries objects for the given match key or an empty array if not available.
-*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
-*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+ *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+ *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getMatchTimeseries(
     match_key: String
@@ -1643,7 +1682,8 @@ suspend fun TBA.getDistrictsByYear(
             display_name = it.string("display_name"),
             key = it.string("key"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -1690,18 +1730,20 @@ suspend fun TBA.getDistrictEvents(
             website = it.string("website"),
             first_event_id = it.string("first_event_id"),
             first_event_code = it.string("first_event_code"),
-            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem -> 
+            webcasts = it.genericArray("webcasts")?.mapToList { webcastsItem ->
                 Webcast(
                     raw = webcastsItem,
                     type = webcastsItem.string("type"),
                     channel = webcastsItem.string("channel"),
                     file = webcastsItem.string("file")
-                )},
+                )
+            },
             division_keys = it.stringList("division_keys"),
             parent_event_key = it.string("parent_event_key"),
             playoff_type = it.int("playoff_type"),
             playoff_type_string = it.string("playoff_type_string")
-        )}
+        )
+    }
 }
 
 
@@ -1734,7 +1776,8 @@ suspend fun TBA.getDistrictEventsSimple(
             start_date = it.string("start_date"),
             end_date = it.string("end_date"),
             year = it.int("year")
-        )}
+        )
+    }
 }
 
 
@@ -1777,7 +1820,8 @@ suspend fun TBA.getDistrictTeams(
             rookie_year = it.int("rookie_year"),
             motto = it.string("motto"),
             home_championship = it.obj("home_championship")
-        )}
+        )
+    }
 }
 
 
@@ -1798,7 +1842,8 @@ suspend fun TBA.getDistrictTeamsSimple(
             city = it.string("city"),
             state_prov = it.string("state_prov"),
             country = it.string("country")
-        )}
+        )
+    }
 }
 
 
@@ -1828,5 +1873,6 @@ suspend fun TBA.getDistrictRankings(
             rookie_bonus = it.int("rookie_bonus"),
             point_total = it.int("point_total"),
             event_points = it.objList("event_points")
-        )}
+        )
+    }
 }
