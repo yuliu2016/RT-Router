@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ca.warp7.rt.router.tba
 
 import ca.warp7.rt.router.impl.ConfigSystem
@@ -22,4 +24,34 @@ internal suspend fun TBA.get(requestURL: String): JsonObject {
 
 internal suspend fun TBA.getArray(requestURL: String): JsonArray<*> {
     return getParsed(requestURL) as JsonArray<*>
+}
+
+internal inline fun <T> JsonArray<*>.mapToList(action: (JsonObject) -> T): List<T> {
+    val result = ArrayList<T>(size)
+    for (i in 0 until size) result[i] = action(get(i) as JsonObject)
+    return result
+}
+
+internal fun JsonObject.genericArray(fieldName: String): JsonArray<*>? {
+    return get(fieldName) as JsonArray<*>?
+}
+
+internal fun JsonObject.stringList(fieldName: String): List<String>? {
+    return array<String>(fieldName)?.toList()
+}
+
+internal fun JsonObject.doubleList(fieldName: String): List<Double>? {
+    return array<Double>(fieldName)?.toList()
+}
+
+internal fun JsonObject.intList(fieldName: String): List<Int>? {
+    return array<Int>(fieldName)?.toList()
+}
+
+internal fun JsonObject.booleanList(fieldName: String): List<Boolean>? {
+    return array<Boolean>(fieldName)?.toList()
+}
+
+internal fun JsonObject.objList(fieldName: String): List<Map<String, Any?>>? {
+    return array<JsonObject>(fieldName)?.toList()
 }

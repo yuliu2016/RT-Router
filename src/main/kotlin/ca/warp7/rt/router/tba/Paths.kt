@@ -12,7 +12,7 @@ suspend fun TBA.getStatus(): APIStatus {
         current_season = response.int("current_season"),
         max_season = response.int("max_season"),
         is_datafeed_down = response.boolean("is_datafeed_down"),
-        down_events = null,
+        down_events = response.stringList("down_events"),
         ios = response.obj("ios")?.let { ios ->
             APIStatusAppVersion(
                 raw = ios,
@@ -119,7 +119,7 @@ suspend fun TBA.getTeam(
         website = response.string("website"),
         rookie_year = response.int("rookie_year"),
         motto = response.string("motto"),
-        home_championship = null
+        home_championship = response.obj("home_championship")
     )
 }
 
@@ -304,8 +304,8 @@ suspend fun TBA.getTeamEventStatus(
             TeamEventStatusRank(
                 raw = qual,
                 num_teams = qual.int("num_teams"),
-                ranking = null,
-                sort_order_info = null,
+                ranking = qual.obj("ranking"),
+                sort_order_info = qual.objList("sort_order_info"),
                 status = qual.string("status")
             )
         },
@@ -527,7 +527,7 @@ suspend fun TBA.getEvent(
         first_event_id = response.string("first_event_id"),
         first_event_code = response.string("first_event_code"),
         webcasts = null,
-        division_keys = null,
+        division_keys = response.stringList("division_keys"),
         parent_event_key = response.string("parent_event_key"),
         playoff_type = response.int("playoff_type"),
         playoff_type_string = response.string("playoff_type_string")
@@ -584,8 +584,8 @@ suspend fun TBA.getEventInsights(
     val response = get("/event/$event_key/insights")
     return EventInsights(
         raw = response,
-        qual = null,
-        playoff = null
+        qual = response.obj("qual"),
+        playoff = response.obj("playoff")
     )
 }
 
@@ -598,9 +598,9 @@ suspend fun TBA.getEventOPRs(
     val response = get("/event/$event_key/oprs")
     return EventOPRs(
         raw = response,
-        oprs = null,
-        dprs = null,
-        ccwms = null
+        oprs = response.obj("oprs"),
+        dprs = response.obj("dprs"),
+        ccwms = response.obj("ccwms")
     )
 }
 
@@ -625,9 +625,9 @@ suspend fun TBA.getEventRankings(
     val response = get("/event/$event_key/rankings")
     return EventRanking(
         raw = response,
-        rankings = null,
-        extra_stats_info = null,
-        sort_order_info = null
+        rankings = response.objList("rankings"),
+        extra_stats_info = response.objList("extra_stats_info"),
+        sort_order_info = response.objList("sort_order_info")
     )
 }
 
@@ -640,8 +640,8 @@ suspend fun TBA.getEventDistrictPoints(
     val response = get("/event/$event_key/district_points")
     return EventDistrictPoints(
         raw = response,
-        points = null,
-        tiebreakers = null
+        points = response.obj("points"),
+        tiebreakers = response.obj("tiebreakers")
     )
 }
 
@@ -757,8 +757,8 @@ suspend fun TBA.getMatch(
         actual_time = response.int("actual_time"),
         predicted_time = response.int("predicted_time"),
         post_result_time = response.int("post_result_time"),
-        score_breakdown = null,
-        videos = null
+        score_breakdown = response.obj("score_breakdown"),
+        videos = response.objList("videos")
     )
 }
 

@@ -35,13 +35,21 @@ params_dict = {
     "district_key": "String"
 }
 
+letfmt = """{name}.obj("{p}")?.let {{ {p} ->
+{i8}{ldef}
+{i4}}}"""
+
+prim = """{name}.{typ}("{p}")"""
+
 def get_kk(k):
     sp = k.split("_")
     sl = list(map(lambda x: x[0].capitalize() + x[1:], sp))
     kk = "".join(sl)
     return kk
 
-def ctr_for_def(ref_k, name, indent):
+def obj_for_def(ref_k, name, indent):
+    p4 = indent + 4
+    p8 = indent + 8
     v = defs[ref_k]
     if "properties" in v:
         props = v["properties"]
@@ -59,7 +67,7 @@ def ctr_for_def(ref_k, name, indent):
         argdat = dcp + " = "
         if "$ref" in q:
             ref_k = q["$ref"].split("/")[-1]
-            argdat += name + ".obj(\"" + p + "\")?.let { " + p + " ->\n" + " " * (indent + 8) + ctr_for_def(ref_k, p, indent + 8) + "\n" + " " * (indent + 4) + "}"
+            argdat += letfmt.format(name=name, p=p, i8=" "*p8, i4 = " "*p4, ldef= obj_for_def(ref_k, p, p8))
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
             typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))
@@ -68,44 +76,51 @@ def ctr_for_def(ref_k, name, indent):
             dtype = q["type"]
             if dtype == "object":
                 typing = "Map<String, Any?>"
-                argdat += "null"
+                argdat += prim.format(name=name, typ="obj", p=p)
             elif dtype == "number":
                 typing = "Double"
-                argdat += name + ".double(\"" + p + "\")"
+                argdat += prim.format(name=name, typ="double", p=p)
             elif dtype == "string":
                 typing = "String"
-                argdat += name + ".string(\"" + p + "\")"
+                argdat += prim.format(name=name, typ="string", p=p)
             elif dtype == "integer":
                 typing = "Int"
-                argdat += name + ".int(\"" + p + "\")"
+                argdat += prim.format(name=name, typ="int", p=p)
             elif dtype == "boolean":
                 typing = "Boolean"
-                argdat += name + ".boolean(\"" + p + "\")"
+                argdat += prim.format(name=name, typ="boolean", p=p)
             elif dtype == "array":
-                argdat += "null"
                 it = q["items"]
                 if "$ref" in it:
                     ref_k = it["$ref"].split("/")[-1]
                     typing = get_kk(ref_k)
+##                    argdat += prim.format(name=name, typ="genericArray", p=p)
+##                    argdat += ".mapToList { " + p + "Item -> \n" + obj_for_def(ref_k, p + "Item", p8) + "}"
+                    argdat += "null"
                 else:
                     atype = it["type"]
                     if atype == "object":
                         typing = "List<Map<String, Any?>>"
+                        argdat += prim.format(name=name, typ="objList", p=p)
                     elif atype == "number":
                         typing = "List<Double>"
+                        argdat += prim.format(name=name, typ="doubleList", p=p)
                     elif atype == "string":
                         typing = "List<String>"
+                        argdat += prim.format(name=name, typ="stringList", p=p)
                     elif atype == "integer":
                         typing = "List<Int>"
+                        argdat += prim.format(name=name, typ="intList", p=p)
                     elif atype == "boolean":
                         typing = "List<Boolean>"
+                        argdat += prim.format(name=name, typ="booleanList", p=p)
                     else:
                         print(it)
                         raise TypeError()
             else:
                 raise TypeError()
         pz.append(argdat)
-    dat += ",\n".join(map(lambda x: " " * (indent + 4) + x, pz))
+    dat += ",\n".join(map(lambda x: " " * p4 + x, pz))
     dat += "\n" + " " * indent + ")"
     return dat
 
@@ -133,7 +148,7 @@ def func_for_kk(k, v):
     if "$ref" in res:
         ref_k = res["$ref"].split("/")[-1]
         typing = get_kk(ref_k)
-        body = "return " + ctr_for_def(ref_k, "response", 4)
+        body = "return " + obj_for_def(ref_k, "response", 4)
     elif res["type"] == "array":
         it = res["items"]
         fname= "getArray"
