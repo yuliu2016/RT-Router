@@ -21,7 +21,7 @@ ft = """
  * {des}
  */
 suspend fun TBA.{op_id}({params}): {typing} {{
-    val response = get("{k}")
+    val response = {fname}("{k}")
     {body}
 }}"""
 
@@ -48,27 +48,41 @@ def ctr_for_def(ref_k, name, indent):
     else:
         props = {}
     kk = get_kk(ref_k)
-    dat = kk + "("
-    pz = ["\nraw = " + name]
+    dat = kk + "(\n"
+    pz = ["raw = " + name]
     for p, q in props.items():
+        # reserved words
+        if p == "in":
+            dcp = "_in"
+        else:
+            dcp = p
+        argdat = dcp + " = "
         if "$ref" in q:
             ref_k = q["$ref"].split("/")[-1]
+            argdat += "null"
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
             typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))
+            argdat += "null"
         else:
             dtype = q["type"]
             if dtype == "object":
                 typing = "Map<String, Any?>"
+                argdat += "null"
             elif dtype == "number":
                 typing = "Double"
+                argdat += name + ".double(\"" + p + "\")"
             elif dtype == "string":
                 typing = "String"
+                argdat += name + ".string(\"" + p + "\")"
             elif dtype == "integer":
                 typing = "Int"
+                argdat += name + ".int(\"" + p + "\")"
             elif dtype == "boolean":
                 typing = "Boolean"
+                argdat += name + ".boolean(\"" + p + "\")"
             elif dtype == "array":
+                argdat += "null"
                 it = q["items"]
                 if "$ref" in it:
                     ref_k = it["$ref"].split("/")[-1]
@@ -90,13 +104,9 @@ def ctr_for_def(ref_k, name, indent):
                         raise TypeError()
             else:
                 raise TypeError()
-
-        # reserved words
-        if p == "in":
-            p = "_in"
-        pz.append("\n" + p + " = null")
-    dat += ",".join(pz)
-    dat += ")"
+        pz.append(argdat)
+    dat += ",\n".join(map(lambda x: " " * (indent + 4) + x, pz))
+    dat += "\n" + " " * indent + ")"
     return dat
 
 def func_for_kk(k, v):
@@ -119,12 +129,14 @@ def func_for_kk(k, v):
         for p in actual_params:
             k2 = k2.replace("{" + p + "}", "$" + p)
     body = "TODO()"
+    fname = "get"
     if "$ref" in res:
         ref_k = res["$ref"].split("/")[-1]
         typing = get_kk(ref_k)
-        body = "return " + ctr_for_def(ref_k, "response", 0)
+        body = "return " + ctr_for_def(ref_k, "response", 4)
     elif res["type"] == "array":
         it = res["items"]
+        fname= "getArray"
         if "$ref" in it:
             ref_k = it["$ref"].split("/")[-1]
             typing = "List<" + get_kk(ref_k) + ">"
@@ -142,7 +154,7 @@ def func_for_kk(k, v):
     else:
         raise TypeError()
         
-    s = ft.format(des=des, op_id=op_id, params=ps, typing=typing, k=k2, body=body)
+    s = ft.format(des=des, op_id=op_id, params=ps, typing=typing, k=k2, body=body, fname=fname)
     return s
 
 with open("Paths.kt", mode="w") as io:

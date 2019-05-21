@@ -9,9 +9,9 @@ suspend fun TBA.getStatus(): APIStatus {
     val response = get("/status")
     return APIStatus(
         raw = response,
-        current_season = null,
-        max_season = null,
-        is_datafeed_down = null,
+        current_season = response.int("current_season"),
+        max_season = response.int("max_season"),
+        is_datafeed_down = response.boolean("is_datafeed_down"),
         down_events = null,
         ios = null,
         android = null
@@ -24,7 +24,7 @@ suspend fun TBA.getStatus(): APIStatus {
 suspend fun TBA.getTeams(
     page_num: Int
 ): List<Team> {
-    val response = get("/teams/$page_num")
+    val response = getArray("/teams/$page_num")
     TODO()
 }
 
@@ -34,7 +34,7 @@ suspend fun TBA.getTeams(
 suspend fun TBA.getTeamsSimple(
     page_num: Int
 ): List<TeamSimple> {
-    val response = get("/teams/$page_num/simple")
+    val response = getArray("/teams/$page_num/simple")
     TODO()
 }
 
@@ -44,7 +44,7 @@ suspend fun TBA.getTeamsSimple(
 suspend fun TBA.getTeamsKeys(
     page_num: Int
 ): List<String> {
-    val response = get("/teams/$page_num/keys")
+    val response = getArray("/teams/$page_num/keys")
     TODO()
 }
 
@@ -55,7 +55,7 @@ suspend fun TBA.getTeamsByYear(
     year: Int,
     page_num: Int
 ): List<Team> {
-    val response = get("/teams/$year/$page_num")
+    val response = getArray("/teams/$year/$page_num")
     TODO()
 }
 
@@ -66,7 +66,7 @@ suspend fun TBA.getTeamsByYearSimple(
     year: Int,
     page_num: Int
 ): List<TeamSimple> {
-    val response = get("/teams/$year/$page_num/simple")
+    val response = getArray("/teams/$year/$page_num/simple")
     TODO()
 }
 
@@ -77,7 +77,7 @@ suspend fun TBA.getTeamsByYearKeys(
     year: Int,
     page_num: Int
 ): List<String> {
-    val response = get("/teams/$year/$page_num/keys")
+    val response = getArray("/teams/$year/$page_num/keys")
     TODO()
 }
 
@@ -90,23 +90,23 @@ suspend fun TBA.getTeam(
     val response = get("/team/$team_key")
     return Team(
         raw = response,
-        key = null,
-        team_number = null,
-        nickname = null,
-        name = null,
-        city = null,
-        state_prov = null,
-        country = null,
-        address = null,
-        postal_code = null,
-        gmaps_place_id = null,
-        gmaps_url = null,
-        lat = null,
-        lng = null,
-        location_name = null,
-        website = null,
-        rookie_year = null,
-        motto = null,
+        key = response.string("key"),
+        team_number = response.int("team_number"),
+        nickname = response.string("nickname"),
+        name = response.string("name"),
+        city = response.string("city"),
+        state_prov = response.string("state_prov"),
+        country = response.string("country"),
+        address = response.string("address"),
+        postal_code = response.string("postal_code"),
+        gmaps_place_id = response.string("gmaps_place_id"),
+        gmaps_url = response.string("gmaps_url"),
+        lat = response.double("lat"),
+        lng = response.double("lng"),
+        location_name = response.string("location_name"),
+        website = response.string("website"),
+        rookie_year = response.int("rookie_year"),
+        motto = response.string("motto"),
         home_championship = null
     )
 }
@@ -120,13 +120,13 @@ suspend fun TBA.getTeamSimple(
     val response = get("/team/$team_key/simple")
     return TeamSimple(
         raw = response,
-        key = null,
-        team_number = null,
-        nickname = null,
-        name = null,
-        city = null,
-        state_prov = null,
-        country = null
+        key = response.string("key"),
+        team_number = response.int("team_number"),
+        nickname = response.string("nickname"),
+        name = response.string("name"),
+        city = response.string("city"),
+        state_prov = response.string("state_prov"),
+        country = response.string("country")
     )
 }
 
@@ -136,7 +136,7 @@ suspend fun TBA.getTeamSimple(
 suspend fun TBA.getTeamYearsParticipated(
     team_key: String
 ): List<Int> {
-    val response = get("/team/$team_key/years_participated")
+    val response = getArray("/team/$team_key/years_participated")
     TODO()
 }
 
@@ -146,7 +146,7 @@ suspend fun TBA.getTeamYearsParticipated(
 suspend fun TBA.getTeamDistricts(
     team_key: String
 ): List<DistrictList> {
-    val response = get("/team/$team_key/districts")
+    val response = getArray("/team/$team_key/districts")
     TODO()
 }
 
@@ -156,7 +156,7 @@ suspend fun TBA.getTeamDistricts(
 suspend fun TBA.getTeamRobots(
     team_key: String
 ): List<TeamRobot> {
-    val response = get("/team/$team_key/robots")
+    val response = getArray("/team/$team_key/robots")
     TODO()
 }
 
@@ -166,7 +166,7 @@ suspend fun TBA.getTeamRobots(
 suspend fun TBA.getTeamEvents(
     team_key: String
 ): List<Event> {
-    val response = get("/team/$team_key/events")
+    val response = getArray("/team/$team_key/events")
     TODO()
 }
 
@@ -176,7 +176,7 @@ suspend fun TBA.getTeamEvents(
 suspend fun TBA.getTeamEventsSimple(
     team_key: String
 ): List<EventSimple> {
-    val response = get("/team/$team_key/events/simple")
+    val response = getArray("/team/$team_key/events/simple")
     TODO()
 }
 
@@ -186,7 +186,7 @@ suspend fun TBA.getTeamEventsSimple(
 suspend fun TBA.getTeamEventsKeys(
     team_key: String
 ): List<String> {
-    val response = get("/team/$team_key/events/keys")
+    val response = getArray("/team/$team_key/events/keys")
     TODO()
 }
 
@@ -197,7 +197,7 @@ suspend fun TBA.getTeamEventsByYear(
     team_key: String,
     year: Int
 ): List<Event> {
-    val response = get("/team/$team_key/events/$year")
+    val response = getArray("/team/$team_key/events/$year")
     TODO()
 }
 
@@ -208,7 +208,7 @@ suspend fun TBA.getTeamEventsByYearSimple(
     team_key: String,
     year: Int
 ): List<EventSimple> {
-    val response = get("/team/$team_key/events/$year/simple")
+    val response = getArray("/team/$team_key/events/$year/simple")
     TODO()
 }
 
@@ -219,7 +219,7 @@ suspend fun TBA.getTeamEventsByYearKeys(
     team_key: String,
     year: Int
 ): List<String> {
-    val response = get("/team/$team_key/events/$year/keys")
+    val response = getArray("/team/$team_key/events/$year/keys")
     TODO()
 }
 
@@ -241,7 +241,7 @@ suspend fun TBA.getTeamEventMatches(
     team_key: String,
     event_key: String
 ): List<Match> {
-    val response = get("/team/$team_key/event/$event_key/matches")
+    val response = getArray("/team/$team_key/event/$event_key/matches")
     TODO()
 }
 
@@ -252,7 +252,7 @@ suspend fun TBA.getTeamEventMatchesSimple(
     team_key: String,
     event_key: String
 ): List<Match> {
-    val response = get("/team/$team_key/event/$event_key/matches/simple")
+    val response = getArray("/team/$team_key/event/$event_key/matches/simple")
     TODO()
 }
 
@@ -263,7 +263,7 @@ suspend fun TBA.getTeamEventMatchesKeys(
     team_key: String,
     event_key: String
 ): List<String> {
-    val response = get("/team/$team_key/event/$event_key/matches/keys")
+    val response = getArray("/team/$team_key/event/$event_key/matches/keys")
     TODO()
 }
 
@@ -274,7 +274,7 @@ suspend fun TBA.getTeamEventAwards(
     team_key: String,
     event_key: String
 ): List<Award> {
-    val response = get("/team/$team_key/event/$event_key/awards")
+    val response = getArray("/team/$team_key/event/$event_key/awards")
     TODO()
 }
 
@@ -291,11 +291,11 @@ suspend fun TBA.getTeamEventStatus(
         qual = null,
         alliance = null,
         playoff = null,
-        alliance_status_str = null,
-        playoff_status_str = null,
-        overall_status_str = null,
-        next_match_key = null,
-        last_match_key = null
+        alliance_status_str = response.string("alliance_status_str"),
+        playoff_status_str = response.string("playoff_status_str"),
+        overall_status_str = response.string("overall_status_str"),
+        next_match_key = response.string("next_match_key"),
+        last_match_key = response.string("last_match_key")
     )
 }
 
@@ -305,7 +305,7 @@ suspend fun TBA.getTeamEventStatus(
 suspend fun TBA.getTeamAwards(
     team_key: String
 ): List<Award> {
-    val response = get("/team/$team_key/awards")
+    val response = getArray("/team/$team_key/awards")
     TODO()
 }
 
@@ -316,7 +316,7 @@ suspend fun TBA.getTeamAwardsByYear(
     team_key: String,
     year: Int
 ): List<Award> {
-    val response = get("/team/$team_key/awards/$year")
+    val response = getArray("/team/$team_key/awards/$year")
     TODO()
 }
 
@@ -327,7 +327,7 @@ suspend fun TBA.getTeamMatchesByYear(
     team_key: String,
     year: Int
 ): List<Match> {
-    val response = get("/team/$team_key/matches/$year")
+    val response = getArray("/team/$team_key/matches/$year")
     TODO()
 }
 
@@ -338,7 +338,7 @@ suspend fun TBA.getTeamMatchesByYearSimple(
     team_key: String,
     year: Int
 ): List<MatchSimple> {
-    val response = get("/team/$team_key/matches/$year/simple")
+    val response = getArray("/team/$team_key/matches/$year/simple")
     TODO()
 }
 
@@ -349,7 +349,7 @@ suspend fun TBA.getTeamMatchesByYearKeys(
     team_key: String,
     year: Int
 ): List<String> {
-    val response = get("/team/$team_key/matches/$year/keys")
+    val response = getArray("/team/$team_key/matches/$year/keys")
     TODO()
 }
 
@@ -360,7 +360,7 @@ suspend fun TBA.getTeamMediaByYear(
     team_key: String,
     year: Int
 ): List<Media> {
-    val response = get("/team/$team_key/media/$year")
+    val response = getArray("/team/$team_key/media/$year")
     TODO()
 }
 
@@ -371,7 +371,7 @@ suspend fun TBA.getTeamMediaByTag(
     team_key: String,
     media_tag: String
 ): List<Media> {
-    val response = get("/team/$team_key/media/tag/$media_tag")
+    val response = getArray("/team/$team_key/media/tag/$media_tag")
     TODO()
 }
 
@@ -383,7 +383,7 @@ suspend fun TBA.getTeamMediaByTagYear(
     media_tag: String,
     year: Int
 ): List<Media> {
-    val response = get("/team/$team_key/media/tag/$media_tag/$year")
+    val response = getArray("/team/$team_key/media/tag/$media_tag/$year")
     TODO()
 }
 
@@ -393,7 +393,7 @@ suspend fun TBA.getTeamMediaByTagYear(
 suspend fun TBA.getTeamSocialMedia(
     team_key: String
 ): List<Media> {
-    val response = get("/team/$team_key/social_media")
+    val response = getArray("/team/$team_key/social_media")
     TODO()
 }
 
@@ -403,7 +403,7 @@ suspend fun TBA.getTeamSocialMedia(
 suspend fun TBA.getEventsByYear(
     year: Int
 ): List<Event> {
-    val response = get("/events/$year")
+    val response = getArray("/events/$year")
     TODO()
 }
 
@@ -413,7 +413,7 @@ suspend fun TBA.getEventsByYear(
 suspend fun TBA.getEventsByYearSimple(
     year: Int
 ): List<EventSimple> {
-    val response = get("/events/$year/simple")
+    val response = getArray("/events/$year/simple")
     TODO()
 }
 
@@ -423,7 +423,7 @@ suspend fun TBA.getEventsByYearSimple(
 suspend fun TBA.getEventsByYearKeys(
     year: Int
 ): List<String> {
-    val response = get("/events/$year/keys")
+    val response = getArray("/events/$year/keys")
     TODO()
 }
 
@@ -436,36 +436,36 @@ suspend fun TBA.getEvent(
     val response = get("/event/$event_key")
     return Event(
         raw = response,
-        key = null,
-        name = null,
-        event_code = null,
-        event_type = null,
+        key = response.string("key"),
+        name = response.string("name"),
+        event_code = response.string("event_code"),
+        event_type = response.int("event_type"),
         district = null,
-        city = null,
-        state_prov = null,
-        country = null,
-        start_date = null,
-        end_date = null,
-        year = null,
-        short_name = null,
-        event_type_string = null,
-        week = null,
-        address = null,
-        postal_code = null,
-        gmaps_place_id = null,
-        gmaps_url = null,
-        lat = null,
-        lng = null,
-        location_name = null,
-        timezone = null,
-        website = null,
-        first_event_id = null,
-        first_event_code = null,
+        city = response.string("city"),
+        state_prov = response.string("state_prov"),
+        country = response.string("country"),
+        start_date = response.string("start_date"),
+        end_date = response.string("end_date"),
+        year = response.int("year"),
+        short_name = response.string("short_name"),
+        event_type_string = response.string("event_type_string"),
+        week = response.int("week"),
+        address = response.string("address"),
+        postal_code = response.string("postal_code"),
+        gmaps_place_id = response.string("gmaps_place_id"),
+        gmaps_url = response.string("gmaps_url"),
+        lat = response.double("lat"),
+        lng = response.double("lng"),
+        location_name = response.string("location_name"),
+        timezone = response.string("timezone"),
+        website = response.string("website"),
+        first_event_id = response.string("first_event_id"),
+        first_event_code = response.string("first_event_code"),
         webcasts = null,
         division_keys = null,
-        parent_event_key = null,
-        playoff_type = null,
-        playoff_type_string = null
+        parent_event_key = response.string("parent_event_key"),
+        playoff_type = response.int("playoff_type"),
+        playoff_type_string = response.string("playoff_type_string")
     )
 }
 
@@ -478,17 +478,17 @@ suspend fun TBA.getEventSimple(
     val response = get("/event/$event_key/simple")
     return EventSimple(
         raw = response,
-        key = null,
-        name = null,
-        event_code = null,
-        event_type = null,
+        key = response.string("key"),
+        name = response.string("name"),
+        event_code = response.string("event_code"),
+        event_type = response.int("event_type"),
         district = null,
-        city = null,
-        state_prov = null,
-        country = null,
-        start_date = null,
-        end_date = null,
-        year = null
+        city = response.string("city"),
+        state_prov = response.string("state_prov"),
+        country = response.string("country"),
+        start_date = response.string("start_date"),
+        end_date = response.string("end_date"),
+        year = response.int("year")
     )
 }
 
@@ -498,7 +498,7 @@ suspend fun TBA.getEventSimple(
 suspend fun TBA.getEventAlliances(
     event_key: String
 ): List<EliminationAlliance> {
-    val response = get("/event/$event_key/alliances")
+    val response = getArray("/event/$event_key/alliances")
     TODO()
 }
 
@@ -578,7 +578,7 @@ suspend fun TBA.getEventDistrictPoints(
 suspend fun TBA.getEventTeams(
     event_key: String
 ): List<Team> {
-    val response = get("/event/$event_key/teams")
+    val response = getArray("/event/$event_key/teams")
     TODO()
 }
 
@@ -588,7 +588,7 @@ suspend fun TBA.getEventTeams(
 suspend fun TBA.getEventTeamsSimple(
     event_key: String
 ): List<TeamSimple> {
-    val response = get("/event/$event_key/teams/simple")
+    val response = getArray("/event/$event_key/teams/simple")
     TODO()
 }
 
@@ -598,7 +598,7 @@ suspend fun TBA.getEventTeamsSimple(
 suspend fun TBA.getEventTeamsKeys(
     event_key: String
 ): List<String> {
-    val response = get("/event/$event_key/teams/keys")
+    val response = getArray("/event/$event_key/teams/keys")
     TODO()
 }
 
@@ -618,7 +618,7 @@ suspend fun TBA.getEventTeamsStatuses(
 suspend fun TBA.getEventMatches(
     event_key: String
 ): List<Match> {
-    val response = get("/event/$event_key/matches")
+    val response = getArray("/event/$event_key/matches")
     TODO()
 }
 
@@ -628,7 +628,7 @@ suspend fun TBA.getEventMatches(
 suspend fun TBA.getEventMatchesSimple(
     event_key: String
 ): List<MatchSimple> {
-    val response = get("/event/$event_key/matches/simple")
+    val response = getArray("/event/$event_key/matches/simple")
     TODO()
 }
 
@@ -638,19 +638,19 @@ suspend fun TBA.getEventMatchesSimple(
 suspend fun TBA.getEventMatchesKeys(
     event_key: String
 ): List<String> {
-    val response = get("/event/$event_key/matches/keys")
+    val response = getArray("/event/$event_key/matches/keys")
     TODO()
 }
 
 /**
  * Gets an array of Match Keys for the given event key that have timeseries data. Returns an empty array if no matches have timeseries data.
- *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
- *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getEventMatchTimeseries(
     event_key: String
 ): List<String> {
-    val response = get("/event/$event_key/matches/timeseries")
+    val response = getArray("/event/$event_key/matches/timeseries")
     TODO()
 }
 
@@ -660,7 +660,7 @@ suspend fun TBA.getEventMatchTimeseries(
 suspend fun TBA.getEventAwards(
     event_key: String
 ): List<Award> {
-    val response = get("/event/$event_key/awards")
+    val response = getArray("/event/$event_key/awards")
     TODO()
 }
 
@@ -673,17 +673,17 @@ suspend fun TBA.getMatch(
     val response = get("/match/$match_key")
     return Match(
         raw = response,
-        key = null,
-        comp_level = null,
-        set_number = null,
-        match_number = null,
+        key = response.string("key"),
+        comp_level = response.string("comp_level"),
+        set_number = response.int("set_number"),
+        match_number = response.int("match_number"),
         alliances = null,
-        winning_alliance = null,
-        event_key = null,
-        time = null,
-        actual_time = null,
-        predicted_time = null,
-        post_result_time = null,
+        winning_alliance = response.string("winning_alliance"),
+        event_key = response.string("event_key"),
+        time = response.int("time"),
+        actual_time = response.int("actual_time"),
+        predicted_time = response.int("predicted_time"),
+        post_result_time = response.int("post_result_time"),
         score_breakdown = null,
         videos = null
     )
@@ -698,28 +698,28 @@ suspend fun TBA.getMatchSimple(
     val response = get("/match/$match_key/simple")
     return MatchSimple(
         raw = response,
-        key = null,
-        comp_level = null,
-        set_number = null,
-        match_number = null,
+        key = response.string("key"),
+        comp_level = response.string("comp_level"),
+        set_number = response.int("set_number"),
+        match_number = response.int("match_number"),
         alliances = null,
-        winning_alliance = null,
-        event_key = null,
-        time = null,
-        predicted_time = null,
-        actual_time = null
+        winning_alliance = response.string("winning_alliance"),
+        event_key = response.string("event_key"),
+        time = response.int("time"),
+        predicted_time = response.int("predicted_time"),
+        actual_time = response.int("actual_time")
     )
 }
 
 /**
  * Gets an array of game-specific Match Timeseries objects for the given match key or an empty array if not available.
- *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
- *WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
+*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+*WARNING:* This endpoint and corresponding data models are under *active development* and may change at any time, including in breaking ways.
  */
 suspend fun TBA.getMatchTimeseries(
     match_key: String
 ): List<Map<String, Any?>> {
-    val response = get("/match/$match_key/timeseries")
+    val response = getArray("/match/$match_key/timeseries")
     TODO()
 }
 
@@ -729,7 +729,7 @@ suspend fun TBA.getMatchTimeseries(
 suspend fun TBA.getDistrictsByYear(
     year: Int
 ): List<DistrictList> {
-    val response = get("/districts/$year")
+    val response = getArray("/districts/$year")
     TODO()
 }
 
@@ -739,7 +739,7 @@ suspend fun TBA.getDistrictsByYear(
 suspend fun TBA.getDistrictEvents(
     district_key: String
 ): List<Event> {
-    val response = get("/district/$district_key/events")
+    val response = getArray("/district/$district_key/events")
     TODO()
 }
 
@@ -749,7 +749,7 @@ suspend fun TBA.getDistrictEvents(
 suspend fun TBA.getDistrictEventsSimple(
     district_key: String
 ): List<EventSimple> {
-    val response = get("/district/$district_key/events/simple")
+    val response = getArray("/district/$district_key/events/simple")
     TODO()
 }
 
@@ -759,7 +759,7 @@ suspend fun TBA.getDistrictEventsSimple(
 suspend fun TBA.getDistrictEventsKeys(
     district_key: String
 ): List<String> {
-    val response = get("/district/$district_key/events/keys")
+    val response = getArray("/district/$district_key/events/keys")
     TODO()
 }
 
@@ -769,7 +769,7 @@ suspend fun TBA.getDistrictEventsKeys(
 suspend fun TBA.getDistrictTeams(
     district_key: String
 ): List<Team> {
-    val response = get("/district/$district_key/teams")
+    val response = getArray("/district/$district_key/teams")
     TODO()
 }
 
@@ -779,7 +779,7 @@ suspend fun TBA.getDistrictTeams(
 suspend fun TBA.getDistrictTeamsSimple(
     district_key: String
 ): List<TeamSimple> {
-    val response = get("/district/$district_key/teams/simple")
+    val response = getArray("/district/$district_key/teams/simple")
     TODO()
 }
 
@@ -789,7 +789,7 @@ suspend fun TBA.getDistrictTeamsSimple(
 suspend fun TBA.getDistrictTeamsKeys(
     district_key: String
 ): List<String> {
-    val response = get("/district/$district_key/teams/keys")
+    val response = getArray("/district/$district_key/teams/keys")
     TODO()
 }
 
@@ -799,6 +799,6 @@ suspend fun TBA.getDistrictTeamsKeys(
 suspend fun TBA.getDistrictRankings(
     district_key: String
 ): List<DistrictRanking> {
-    val response = get("/district/$district_key/rankings")
+    val response = getArray("/district/$district_key/rankings")
     TODO()
 }
