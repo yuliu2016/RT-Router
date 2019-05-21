@@ -14,7 +14,9 @@ defs = data["definitions"]
 
 header = """@file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedReference", "UNUSED_VARIABLE")
 
-package ca.warp7.rt.router.tba"""
+package ca.warp7.rt.router.tba
+
+import com.beust.klaxon.JsonObject"""
 
 ft = """
 /**
@@ -148,19 +150,24 @@ def func_for_kk(k, v):
     if "$ref" in res:
         ref_k = res["$ref"].split("/")[-1]
         typing = get_kk(ref_k)
-        body = "return " + obj_for_def(ref_k, "response", 4)
+        body = "return "
+        body += obj_for_def(ref_k, "response", 4)
     elif res["type"] == "array":
         it = res["items"]
         fname= "getArray"
         if "$ref" in it:
             ref_k = it["$ref"].split("/")[-1]
             typing = "List<" + get_kk(ref_k) + ">"
+            body = "return response.map { it as JsonObject }.map {\n" + " " * 8 + obj_for_def(ref_k, "it", 8) + "}"
         elif it["type"] == "string":
             typing = "List<String>"
+            body = "return response.map { it as String }"
         elif it["type"] == "integer":
             typing = "List<Int>"
+            body = "return response.map { it as Int }"
         elif it["type"] == "object":
             typing = "List<Map<String, Any?>>"
+            body = "return response.map { it as JsonObject }"
         else:
             raise TypeError()
     elif res["type"] == "object":

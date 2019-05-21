@@ -2,6 +2,8 @@
 
 package ca.warp7.rt.router.tba
 
+import com.beust.klaxon.JsonObject
+
 /**
  * Returns API status, and TBA status information.
  */
@@ -37,7 +39,28 @@ suspend fun TBA.getTeams(
     page_num: Int
 ): List<Team> {
     val response = getArray("/teams/$page_num")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Team(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            website = it.string("website"),
+            rookie_year = it.int("rookie_year"),
+            motto = it.string("motto"),
+            home_championship = it.obj("home_championship")
+        )}
 }
 
 /**
@@ -47,7 +70,17 @@ suspend fun TBA.getTeamsSimple(
     page_num: Int
 ): List<TeamSimple> {
     val response = getArray("/teams/$page_num/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        TeamSimple(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country")
+        )}
 }
 
 /**
@@ -57,7 +90,7 @@ suspend fun TBA.getTeamsKeys(
     page_num: Int
 ): List<String> {
     val response = getArray("/teams/$page_num/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -68,7 +101,28 @@ suspend fun TBA.getTeamsByYear(
     page_num: Int
 ): List<Team> {
     val response = getArray("/teams/$year/$page_num")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Team(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            website = it.string("website"),
+            rookie_year = it.int("rookie_year"),
+            motto = it.string("motto"),
+            home_championship = it.obj("home_championship")
+        )}
 }
 
 /**
@@ -79,7 +133,17 @@ suspend fun TBA.getTeamsByYearSimple(
     page_num: Int
 ): List<TeamSimple> {
     val response = getArray("/teams/$year/$page_num/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        TeamSimple(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country")
+        )}
 }
 
 /**
@@ -90,7 +154,7 @@ suspend fun TBA.getTeamsByYearKeys(
     page_num: Int
 ): List<String> {
     val response = getArray("/teams/$year/$page_num/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -149,7 +213,7 @@ suspend fun TBA.getTeamYearsParticipated(
     team_key: String
 ): List<Int> {
     val response = getArray("/team/$team_key/years_participated")
-    TODO()
+    return response.map { it as Int }
 }
 
 /**
@@ -159,7 +223,14 @@ suspend fun TBA.getTeamDistricts(
     team_key: String
 ): List<DistrictList> {
     val response = getArray("/team/$team_key/districts")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        DistrictList(
+            raw = it,
+            abbreviation = it.string("abbreviation"),
+            display_name = it.string("display_name"),
+            key = it.string("key"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -169,7 +240,14 @@ suspend fun TBA.getTeamRobots(
     team_key: String
 ): List<TeamRobot> {
     val response = getArray("/team/$team_key/robots")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        TeamRobot(
+            raw = it,
+            year = it.int("year"),
+            robot_name = it.string("robot_name"),
+            key = it.string("key"),
+            team_key = it.string("team_key")
+        )}
 }
 
 /**
@@ -179,7 +257,48 @@ suspend fun TBA.getTeamEvents(
     team_key: String
 ): List<Event> {
     val response = getArray("/team/$team_key/events")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Event(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year"),
+            short_name = it.string("short_name"),
+            event_type_string = it.string("event_type_string"),
+            week = it.int("week"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            timezone = it.string("timezone"),
+            website = it.string("website"),
+            first_event_id = it.string("first_event_id"),
+            first_event_code = it.string("first_event_code"),
+            webcasts = null,
+            division_keys = it.stringList("division_keys"),
+            parent_event_key = it.string("parent_event_key"),
+            playoff_type = it.int("playoff_type"),
+            playoff_type_string = it.string("playoff_type_string")
+        )}
 }
 
 /**
@@ -189,7 +308,29 @@ suspend fun TBA.getTeamEventsSimple(
     team_key: String
 ): List<EventSimple> {
     val response = getArray("/team/$team_key/events/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        EventSimple(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -199,7 +340,7 @@ suspend fun TBA.getTeamEventsKeys(
     team_key: String
 ): List<String> {
     val response = getArray("/team/$team_key/events/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -210,7 +351,48 @@ suspend fun TBA.getTeamEventsByYear(
     year: Int
 ): List<Event> {
     val response = getArray("/team/$team_key/events/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Event(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year"),
+            short_name = it.string("short_name"),
+            event_type_string = it.string("event_type_string"),
+            week = it.int("week"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            timezone = it.string("timezone"),
+            website = it.string("website"),
+            first_event_id = it.string("first_event_id"),
+            first_event_code = it.string("first_event_code"),
+            webcasts = null,
+            division_keys = it.stringList("division_keys"),
+            parent_event_key = it.string("parent_event_key"),
+            playoff_type = it.int("playoff_type"),
+            playoff_type_string = it.string("playoff_type_string")
+        )}
 }
 
 /**
@@ -221,7 +403,29 @@ suspend fun TBA.getTeamEventsByYearSimple(
     year: Int
 ): List<EventSimple> {
     val response = getArray("/team/$team_key/events/$year/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        EventSimple(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -232,7 +436,7 @@ suspend fun TBA.getTeamEventsByYearKeys(
     year: Int
 ): List<String> {
     val response = getArray("/team/$team_key/events/$year/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -254,7 +458,23 @@ suspend fun TBA.getTeamEventMatches(
     event_key: String
 ): List<Match> {
     val response = getArray("/team/$team_key/event/$event_key/matches")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Match(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            actual_time = it.int("actual_time"),
+            predicted_time = it.int("predicted_time"),
+            post_result_time = it.int("post_result_time"),
+            score_breakdown = it.obj("score_breakdown"),
+            videos = it.objList("videos")
+        )}
 }
 
 /**
@@ -265,7 +485,23 @@ suspend fun TBA.getTeamEventMatchesSimple(
     event_key: String
 ): List<Match> {
     val response = getArray("/team/$team_key/event/$event_key/matches/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Match(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            actual_time = it.int("actual_time"),
+            predicted_time = it.int("predicted_time"),
+            post_result_time = it.int("post_result_time"),
+            score_breakdown = it.obj("score_breakdown"),
+            videos = it.objList("videos")
+        )}
 }
 
 /**
@@ -276,7 +512,7 @@ suspend fun TBA.getTeamEventMatchesKeys(
     event_key: String
 ): List<String> {
     val response = getArray("/team/$team_key/event/$event_key/matches/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -287,7 +523,15 @@ suspend fun TBA.getTeamEventAwards(
     event_key: String
 ): List<Award> {
     val response = getArray("/team/$team_key/event/$event_key/awards")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Award(
+            raw = it,
+            name = it.string("name"),
+            award_type = it.int("award_type"),
+            event_key = it.string("event_key"),
+            recipient_list = null,
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -363,7 +607,15 @@ suspend fun TBA.getTeamAwards(
     team_key: String
 ): List<Award> {
     val response = getArray("/team/$team_key/awards")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Award(
+            raw = it,
+            name = it.string("name"),
+            award_type = it.int("award_type"),
+            event_key = it.string("event_key"),
+            recipient_list = null,
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -374,7 +626,15 @@ suspend fun TBA.getTeamAwardsByYear(
     year: Int
 ): List<Award> {
     val response = getArray("/team/$team_key/awards/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Award(
+            raw = it,
+            name = it.string("name"),
+            award_type = it.int("award_type"),
+            event_key = it.string("event_key"),
+            recipient_list = null,
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -385,7 +645,23 @@ suspend fun TBA.getTeamMatchesByYear(
     year: Int
 ): List<Match> {
     val response = getArray("/team/$team_key/matches/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Match(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            actual_time = it.int("actual_time"),
+            predicted_time = it.int("predicted_time"),
+            post_result_time = it.int("post_result_time"),
+            score_breakdown = it.obj("score_breakdown"),
+            videos = it.objList("videos")
+        )}
 }
 
 /**
@@ -396,7 +672,20 @@ suspend fun TBA.getTeamMatchesByYearSimple(
     year: Int
 ): List<MatchSimple> {
     val response = getArray("/team/$team_key/matches/$year/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        MatchSimple(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            predicted_time = it.int("predicted_time"),
+            actual_time = it.int("actual_time")
+        )}
 }
 
 /**
@@ -407,7 +696,7 @@ suspend fun TBA.getTeamMatchesByYearKeys(
     year: Int
 ): List<String> {
     val response = getArray("/team/$team_key/matches/$year/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -418,7 +707,17 @@ suspend fun TBA.getTeamMediaByYear(
     year: Int
 ): List<Media> {
     val response = getArray("/team/$team_key/media/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Media(
+            raw = it,
+            key = it.string("key"),
+            type = it.string("type"),
+            foreign_key = it.string("foreign_key"),
+            details = it.obj("details"),
+            preferred = it.boolean("preferred"),
+            direct_url = it.string("direct_url"),
+            view_url = it.string("view_url")
+        )}
 }
 
 /**
@@ -429,7 +728,17 @@ suspend fun TBA.getTeamMediaByTag(
     media_tag: String
 ): List<Media> {
     val response = getArray("/team/$team_key/media/tag/$media_tag")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Media(
+            raw = it,
+            key = it.string("key"),
+            type = it.string("type"),
+            foreign_key = it.string("foreign_key"),
+            details = it.obj("details"),
+            preferred = it.boolean("preferred"),
+            direct_url = it.string("direct_url"),
+            view_url = it.string("view_url")
+        )}
 }
 
 /**
@@ -441,7 +750,17 @@ suspend fun TBA.getTeamMediaByTagYear(
     year: Int
 ): List<Media> {
     val response = getArray("/team/$team_key/media/tag/$media_tag/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Media(
+            raw = it,
+            key = it.string("key"),
+            type = it.string("type"),
+            foreign_key = it.string("foreign_key"),
+            details = it.obj("details"),
+            preferred = it.boolean("preferred"),
+            direct_url = it.string("direct_url"),
+            view_url = it.string("view_url")
+        )}
 }
 
 /**
@@ -451,7 +770,17 @@ suspend fun TBA.getTeamSocialMedia(
     team_key: String
 ): List<Media> {
     val response = getArray("/team/$team_key/social_media")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Media(
+            raw = it,
+            key = it.string("key"),
+            type = it.string("type"),
+            foreign_key = it.string("foreign_key"),
+            details = it.obj("details"),
+            preferred = it.boolean("preferred"),
+            direct_url = it.string("direct_url"),
+            view_url = it.string("view_url")
+        )}
 }
 
 /**
@@ -461,7 +790,48 @@ suspend fun TBA.getEventsByYear(
     year: Int
 ): List<Event> {
     val response = getArray("/events/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Event(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year"),
+            short_name = it.string("short_name"),
+            event_type_string = it.string("event_type_string"),
+            week = it.int("week"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            timezone = it.string("timezone"),
+            website = it.string("website"),
+            first_event_id = it.string("first_event_id"),
+            first_event_code = it.string("first_event_code"),
+            webcasts = null,
+            division_keys = it.stringList("division_keys"),
+            parent_event_key = it.string("parent_event_key"),
+            playoff_type = it.int("playoff_type"),
+            playoff_type_string = it.string("playoff_type_string")
+        )}
 }
 
 /**
@@ -471,7 +841,29 @@ suspend fun TBA.getEventsByYearSimple(
     year: Int
 ): List<EventSimple> {
     val response = getArray("/events/$year/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        EventSimple(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -481,7 +873,7 @@ suspend fun TBA.getEventsByYearKeys(
     year: Int
 ): List<String> {
     val response = getArray("/events/$year/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -572,7 +964,15 @@ suspend fun TBA.getEventAlliances(
     event_key: String
 ): List<EliminationAlliance> {
     val response = getArray("/event/$event_key/alliances")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        EliminationAlliance(
+            raw = it,
+            name = it.string("name"),
+            backup = it.obj("backup"),
+            declines = it.stringList("declines"),
+            picks = it.stringList("picks"),
+            status = it.obj("status")
+        )}
 }
 
 /**
@@ -652,7 +1052,28 @@ suspend fun TBA.getEventTeams(
     event_key: String
 ): List<Team> {
     val response = getArray("/event/$event_key/teams")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Team(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            website = it.string("website"),
+            rookie_year = it.int("rookie_year"),
+            motto = it.string("motto"),
+            home_championship = it.obj("home_championship")
+        )}
 }
 
 /**
@@ -662,7 +1083,17 @@ suspend fun TBA.getEventTeamsSimple(
     event_key: String
 ): List<TeamSimple> {
     val response = getArray("/event/$event_key/teams/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        TeamSimple(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country")
+        )}
 }
 
 /**
@@ -672,7 +1103,7 @@ suspend fun TBA.getEventTeamsKeys(
     event_key: String
 ): List<String> {
     val response = getArray("/event/$event_key/teams/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -692,7 +1123,23 @@ suspend fun TBA.getEventMatches(
     event_key: String
 ): List<Match> {
     val response = getArray("/event/$event_key/matches")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Match(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            actual_time = it.int("actual_time"),
+            predicted_time = it.int("predicted_time"),
+            post_result_time = it.int("post_result_time"),
+            score_breakdown = it.obj("score_breakdown"),
+            videos = it.objList("videos")
+        )}
 }
 
 /**
@@ -702,7 +1149,20 @@ suspend fun TBA.getEventMatchesSimple(
     event_key: String
 ): List<MatchSimple> {
     val response = getArray("/event/$event_key/matches/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        MatchSimple(
+            raw = it,
+            key = it.string("key"),
+            comp_level = it.string("comp_level"),
+            set_number = it.int("set_number"),
+            match_number = it.int("match_number"),
+            alliances = null,
+            winning_alliance = it.string("winning_alliance"),
+            event_key = it.string("event_key"),
+            time = it.int("time"),
+            predicted_time = it.int("predicted_time"),
+            actual_time = it.int("actual_time")
+        )}
 }
 
 /**
@@ -712,7 +1172,7 @@ suspend fun TBA.getEventMatchesKeys(
     event_key: String
 ): List<String> {
     val response = getArray("/event/$event_key/matches/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -724,7 +1184,7 @@ suspend fun TBA.getEventMatchTimeseries(
     event_key: String
 ): List<String> {
     val response = getArray("/event/$event_key/matches/timeseries")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -734,7 +1194,15 @@ suspend fun TBA.getEventAwards(
     event_key: String
 ): List<Award> {
     val response = getArray("/event/$event_key/awards")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Award(
+            raw = it,
+            name = it.string("name"),
+            award_type = it.int("award_type"),
+            event_key = it.string("event_key"),
+            recipient_list = null,
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -793,7 +1261,7 @@ suspend fun TBA.getMatchTimeseries(
     match_key: String
 ): List<Map<String, Any?>> {
     val response = getArray("/match/$match_key/timeseries")
-    TODO()
+    return response.map { it as JsonObject }
 }
 
 /**
@@ -803,7 +1271,14 @@ suspend fun TBA.getDistrictsByYear(
     year: Int
 ): List<DistrictList> {
     val response = getArray("/districts/$year")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        DistrictList(
+            raw = it,
+            abbreviation = it.string("abbreviation"),
+            display_name = it.string("display_name"),
+            key = it.string("key"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -813,7 +1288,48 @@ suspend fun TBA.getDistrictEvents(
     district_key: String
 ): List<Event> {
     val response = getArray("/district/$district_key/events")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Event(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year"),
+            short_name = it.string("short_name"),
+            event_type_string = it.string("event_type_string"),
+            week = it.int("week"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            timezone = it.string("timezone"),
+            website = it.string("website"),
+            first_event_id = it.string("first_event_id"),
+            first_event_code = it.string("first_event_code"),
+            webcasts = null,
+            division_keys = it.stringList("division_keys"),
+            parent_event_key = it.string("parent_event_key"),
+            playoff_type = it.int("playoff_type"),
+            playoff_type_string = it.string("playoff_type_string")
+        )}
 }
 
 /**
@@ -823,7 +1339,29 @@ suspend fun TBA.getDistrictEventsSimple(
     district_key: String
 ): List<EventSimple> {
     val response = getArray("/district/$district_key/events/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        EventSimple(
+            raw = it,
+            key = it.string("key"),
+            name = it.string("name"),
+            event_code = it.string("event_code"),
+            event_type = it.int("event_type"),
+            district = it.obj("district")?.let { district ->
+                DistrictList(
+                    raw = district,
+                    abbreviation = district.string("abbreviation"),
+                    display_name = district.string("display_name"),
+                    key = district.string("key"),
+                    year = district.int("year")
+                )
+            },
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            start_date = it.string("start_date"),
+            end_date = it.string("end_date"),
+            year = it.int("year")
+        )}
 }
 
 /**
@@ -833,7 +1371,7 @@ suspend fun TBA.getDistrictEventsKeys(
     district_key: String
 ): List<String> {
     val response = getArray("/district/$district_key/events/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -843,7 +1381,28 @@ suspend fun TBA.getDistrictTeams(
     district_key: String
 ): List<Team> {
     val response = getArray("/district/$district_key/teams")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        Team(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country"),
+            address = it.string("address"),
+            postal_code = it.string("postal_code"),
+            gmaps_place_id = it.string("gmaps_place_id"),
+            gmaps_url = it.string("gmaps_url"),
+            lat = it.double("lat"),
+            lng = it.double("lng"),
+            location_name = it.string("location_name"),
+            website = it.string("website"),
+            rookie_year = it.int("rookie_year"),
+            motto = it.string("motto"),
+            home_championship = it.obj("home_championship")
+        )}
 }
 
 /**
@@ -853,7 +1412,17 @@ suspend fun TBA.getDistrictTeamsSimple(
     district_key: String
 ): List<TeamSimple> {
     val response = getArray("/district/$district_key/teams/simple")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        TeamSimple(
+            raw = it,
+            key = it.string("key"),
+            team_number = it.int("team_number"),
+            nickname = it.string("nickname"),
+            name = it.string("name"),
+            city = it.string("city"),
+            state_prov = it.string("state_prov"),
+            country = it.string("country")
+        )}
 }
 
 /**
@@ -863,7 +1432,7 @@ suspend fun TBA.getDistrictTeamsKeys(
     district_key: String
 ): List<String> {
     val response = getArray("/district/$district_key/teams/keys")
-    TODO()
+    return response.map { it as String }
 }
 
 /**
@@ -873,5 +1442,13 @@ suspend fun TBA.getDistrictRankings(
     district_key: String
 ): List<DistrictRanking> {
     val response = getArray("/district/$district_key/rankings")
-    TODO()
+    return response.map { it as JsonObject }.map {
+        DistrictRanking(
+            raw = it,
+            team_key = it.string("team_key"),
+            rank = it.int("rank"),
+            rookie_bonus = it.int("rookie_bonus"),
+            point_total = it.int("point_total"),
+            event_points = it.objList("event_points")
+        )}
 }
