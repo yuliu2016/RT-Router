@@ -20,7 +20,7 @@ package ca.warp7.rt.router.tba
 /**
  * Represents Alliance Data
  */
-data class Alliances<T>(
+class Alliances<T>(
 
     /**
      * The Blue Alliance
@@ -31,8 +31,7 @@ data class Alliances<T>(
      * The Red Alliance
      */
     val red: T
-)
-"""
+)"""
 
 template = """
 
@@ -42,7 +41,7 @@ template = """
  * {des}
  */
 
-data class {clz}(
+class {clz}(
     /**
      * Raw Data Map
      */

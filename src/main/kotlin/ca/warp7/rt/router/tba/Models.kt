@@ -6,7 +6,7 @@ package ca.warp7.rt.router.tba
 /**
  * Represents Alliance Data
  */
-data class Alliances<T>(
+class Alliances<T>(
 
     /**
      * The Blue Alliance
@@ -26,7 +26,7 @@ data class Alliances<T>(
  * No description available
  */
 
-data class APIStatus(
+class APIStatus(
     /**
      * Raw Data Map
      */
@@ -70,7 +70,7 @@ data class APIStatus(
  * No description available
  */
 
-data class APIStatusAppVersion(
+class APIStatusAppVersion(
     /**
      * Raw Data Map
      */
@@ -94,7 +94,7 @@ data class APIStatusAppVersion(
  * No description available
  */
 
-data class TeamSimple(
+class TeamSimple(
     /**
      * Raw Data Map
      */
@@ -143,7 +143,7 @@ data class TeamSimple(
  * No description available
  */
 
-data class Team(
+class Team(
     /**
      * Raw Data Map
      */
@@ -247,7 +247,7 @@ data class Team(
  * No description available
  */
 
-data class TeamRobot(
+class TeamRobot(
     /**
      * Raw Data Map
      */
@@ -281,7 +281,7 @@ data class TeamRobot(
  * No description available
  */
 
-data class EventSimple(
+class EventSimple(
     /**
      * Raw Data Map
      */
@@ -350,7 +350,7 @@ data class EventSimple(
  * No description available
  */
 
-data class Event(
+class Event(
     /**
      * Raw Data Map
      */
@@ -514,7 +514,7 @@ data class Event(
  * No description available
  */
 
-data class TeamEventStatus(
+class TeamEventStatus(
     /**
      * Raw Data Map
      */
@@ -568,7 +568,7 @@ data class TeamEventStatus(
  * No description available
  */
 
-data class TeamEventStatusRank(
+class TeamEventStatusRank(
     /**
      * Raw Data Map
      */
@@ -602,7 +602,7 @@ data class TeamEventStatusRank(
  * No description available
  */
 
-data class TeamEventStatusAlliance(
+class TeamEventStatusAlliance(
     /**
      * Raw Data Map
      */
@@ -636,7 +636,7 @@ data class TeamEventStatusAlliance(
  * Backup status, may be null.
  */
 
-data class TeamEventStatusAllianceBackup(
+class TeamEventStatusAllianceBackup(
     /**
      * Raw Data Map
      */
@@ -660,7 +660,7 @@ data class TeamEventStatusAllianceBackup(
  * Playoff status for this team, may be null if the team did not make playoffs, or playoffs have not begun.
  */
 
-data class TeamEventStatusPlayoff(
+class TeamEventStatusPlayoff(
     /**
      * Raw Data Map
      */
@@ -699,7 +699,7 @@ data class TeamEventStatusPlayoff(
  * No description available
  */
 
-data class EventRanking(
+class EventRanking(
     /**
      * Raw Data Map
      */
@@ -728,7 +728,7 @@ data class EventRanking(
  * No description available
  */
 
-data class EventDistrictPoints(
+class EventDistrictPoints(
     /**
      * Raw Data Map
      */
@@ -752,7 +752,7 @@ data class EventDistrictPoints(
  * A year-specific event insight object expressed as a JSON string, separated in to `qual` and `playoff` fields. See also Event_Insights_2016, Event_Insights_2017, etc.
  */
 
-data class EventInsights(
+class EventInsights(
     /**
      * Raw Data Map
      */
@@ -776,7 +776,7 @@ data class EventInsights(
  * Insights for FIRST Stronghold qualification and elimination matches.
  */
 
-data class EventInsights2016(
+class EventInsights2016(
     /**
      * Raw Data Map
      */
@@ -910,7 +910,7 @@ data class EventInsights2016(
  * Insights for FIRST STEAMWORKS qualification and elimination matches.
  */
 
-data class EventInsights2017(
+class EventInsights2017(
     /**
      * Raw Data Map
      */
@@ -1084,7 +1084,7 @@ data class EventInsights2017(
  * Insights for FIRST Power Up qualification and elimination matches.
  */
 
-data class EventInsights2018(
+class EventInsights2018(
     /**
      * Raw Data Map
      */
@@ -1283,7 +1283,7 @@ data class EventInsights2018(
  * OPR, DPR, and CCWM for teams at the event.
  */
 
-data class EventOPRs(
+class EventOPRs(
     /**
      * Raw Data Map
      */
@@ -1312,7 +1312,7 @@ data class EventOPRs(
  * JSON Object containing prediction information for the event. Contains year-specific information and is subject to change.
  */
 
-data class EventPredictions(
+class EventPredictions(
     /**
      * Raw Data Map
      */
@@ -1326,7 +1326,7 @@ data class EventPredictions(
  * No description available
  */
 
-data class Webcast(
+class Webcast(
     /**
      * Raw Data Map
      */
@@ -1355,7 +1355,7 @@ data class Webcast(
  * No description available
  */
 
-data class MatchSimple(
+class MatchSimple(
     /**
      * Raw Data Map
      */
@@ -1419,7 +1419,7 @@ data class MatchSimple(
  * No description available
  */
 
-data class Match(
+class Match(
     /**
      * Raw Data Map
      */
@@ -1498,7 +1498,7 @@ data class Match(
  * No description available
  */
 
-data class MatchAlliance(
+class MatchAlliance(
     /**
      * Raw Data Map
      */
@@ -1532,7 +1532,7 @@ data class MatchAlliance(
  * See the 2015 FMS API documentation for a description of each value
  */
 
-data class MatchScoreBreakdown2015(
+class MatchScoreBreakdown2015(
     /**
      * Raw Data Map
      */
@@ -1566,7 +1566,7 @@ data class MatchScoreBreakdown2015(
  * No description available
  */
 
-data class MatchScoreBreakdown2015Alliance(
+class MatchScoreBreakdown2015Alliance(
     /**
      * Raw Data Map
      */
@@ -1700,7 +1700,7 @@ data class MatchScoreBreakdown2015Alliance(
  * See the 2016 FMS API documentation for a description of each value.
  */
 
-data class MatchScoreBreakdown2016(
+class MatchScoreBreakdown2016(
     /**
      * Raw Data Map
      */
@@ -1724,7 +1724,7 @@ data class MatchScoreBreakdown2016(
  * No description available
  */
 
-data class MatchScoreBreakdown2016Alliance(
+class MatchScoreBreakdown2016Alliance(
     /**
      * Raw Data Map
      */
@@ -1928,7 +1928,7 @@ data class MatchScoreBreakdown2016Alliance(
  * See the 2017 FMS API documentation for a description of each value.
  */
 
-data class MatchScoreBreakdown2017(
+class MatchScoreBreakdown2017(
     /**
      * Raw Data Map
      */
@@ -1952,7 +1952,7 @@ data class MatchScoreBreakdown2017(
  * No description available
  */
 
-data class MatchScoreBreakdown2017Alliance(
+class MatchScoreBreakdown2017Alliance(
     /**
      * Raw Data Map
      */
@@ -2131,7 +2131,7 @@ data class MatchScoreBreakdown2017Alliance(
  * See the 2018 FMS API documentation for a description of each value.
  */
 
-data class MatchScoreBreakdown2018(
+class MatchScoreBreakdown2018(
     /**
      * Raw Data Map
      */
@@ -2155,7 +2155,7 @@ data class MatchScoreBreakdown2018(
  * No description available
  */
 
-data class MatchScoreBreakdown2018Alliance(
+class MatchScoreBreakdown2018Alliance(
     /**
      * Raw Data Map
      */
@@ -2352,11 +2352,11 @@ data class MatchScoreBreakdown2018Alliance(
  * MatchTimeseries2018
  * ------------------------------
  * Timeseries data for the 2018 game *FIRST* POWER UP.
- *WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
- *WARNING:* This model is currently under active development and may change at any time, including in breaking ways.
+*WARNING:* This is *not* official data, and is subject to a significant possibility of error, or missing data. Do not rely on this data for any purpose. In fact, pretend we made it up.
+*WARNING:* This model is currently under active development and may change at any time, including in breaking ways.
  */
 
-data class MatchTimeseries2018(
+class MatchTimeseries2018(
     /**
      * Raw Data Map
      */
@@ -2525,7 +2525,7 @@ data class MatchTimeseries2018(
  * See the 2019 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#reference/match-results/score-details
  */
 
-data class MatchScoreBreakdown2019(
+class MatchScoreBreakdown2019(
     /**
      * Raw Data Map
      */
@@ -2549,7 +2549,7 @@ data class MatchScoreBreakdown2019(
  * No description available
  */
 
-data class MatchScoreBreakdown2019Alliance(
+class MatchScoreBreakdown2019Alliance(
     /**
      * Raw Data Map
      */
@@ -2818,7 +2818,7 @@ data class MatchScoreBreakdown2019Alliance(
  * The `Media` object contains a reference for most any media associated with a team or event on TBA.
  */
 
-data class Media(
+class Media(
     /**
      * Raw Data Map
      */
@@ -2867,7 +2867,7 @@ data class Media(
  * No description available
  */
 
-data class EliminationAlliance(
+class EliminationAlliance(
     /**
      * Raw Data Map
      */
@@ -2906,7 +2906,7 @@ data class EliminationAlliance(
  * No description available
  */
 
-data class Award(
+class Award(
     /**
      * Raw Data Map
      */
@@ -2945,7 +2945,7 @@ data class Award(
  * An `Award_Recipient` object represents the team and/or person who received an award at an event.
  */
 
-data class AwardRecipient(
+class AwardRecipient(
     /**
      * Raw Data Map
      */
@@ -2969,7 +2969,7 @@ data class AwardRecipient(
  * No description available
  */
 
-data class DistrictList(
+class DistrictList(
     /**
      * Raw Data Map
      */
@@ -3003,7 +3003,7 @@ data class DistrictList(
  * Rank of a team in a district.
  */
 
-data class DistrictRanking(
+class DistrictRanking(
     /**
      * Raw Data Map
      */
@@ -3042,7 +3042,7 @@ data class DistrictRanking(
  * A Win-Loss-Tie record for a team, or an alliance.
  */
 
-data class WLTRecord(
+class WLTRecord(
     /**
      * Raw Data Map
      */
