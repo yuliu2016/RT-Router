@@ -59,7 +59,7 @@ def ctr_for_def(ref_k, name, indent):
         argdat = dcp + " = "
         if "$ref" in q:
             ref_k = q["$ref"].split("/")[-1]
-            argdat += "null"
+            argdat += name + ".obj(\"" + p + "\")?.let { " + p + " ->\n" + " " * (indent + 8) + ctr_for_def(ref_k, p, indent + 8) + "\n" + " " * (indent + 4) + "}"
         elif p == "alliances":
             ref_k = q["properties"]["blue"]["$ref"].split("/")[-1]
             typing = "Alliances<{kk}>".format(kk=get_kk(ref_k))

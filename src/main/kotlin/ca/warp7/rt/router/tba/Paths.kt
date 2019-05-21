@@ -13,8 +13,20 @@ suspend fun TBA.getStatus(): APIStatus {
         max_season = response.int("max_season"),
         is_datafeed_down = response.boolean("is_datafeed_down"),
         down_events = null,
-        ios = null,
-        android = null
+        ios = response.obj("ios")?.let { ios ->
+            APIStatusAppVersion(
+                raw = ios,
+                min_app_version = ios.int("min_app_version"),
+                latest_app_version = ios.int("latest_app_version")
+            )
+        },
+        android = response.obj("android")?.let { android ->
+            APIStatusAppVersion(
+                raw = android,
+                min_app_version = android.int("min_app_version"),
+                latest_app_version = android.int("latest_app_version")
+            )
+        }
     )
 }
 
@@ -288,9 +300,54 @@ suspend fun TBA.getTeamEventStatus(
     val response = get("/team/$team_key/event/$event_key/status")
     return TeamEventStatus(
         raw = response,
-        qual = null,
-        alliance = null,
-        playoff = null,
+        qual = response.obj("qual")?.let { qual ->
+            TeamEventStatusRank(
+                raw = qual,
+                num_teams = qual.int("num_teams"),
+                ranking = null,
+                sort_order_info = null,
+                status = qual.string("status")
+            )
+        },
+        alliance = response.obj("alliance")?.let { alliance ->
+            TeamEventStatusAlliance(
+                raw = alliance,
+                name = alliance.string("name"),
+                number = alliance.int("number"),
+                backup = alliance.obj("backup")?.let { backup ->
+                    TeamEventStatusAllianceBackup(
+                        raw = backup,
+                        out = backup.string("out"),
+                        _in = backup.string("in")
+                    )
+                },
+                pick = alliance.int("pick")
+            )
+        },
+        playoff = response.obj("playoff")?.let { playoff ->
+            TeamEventStatusPlayoff(
+                raw = playoff,
+                level = playoff.string("level"),
+                current_level_record = playoff.obj("current_level_record")?.let { current_level_record ->
+                    WLTRecord(
+                        raw = current_level_record,
+                        losses = current_level_record.int("losses"),
+                        wins = current_level_record.int("wins"),
+                        ties = current_level_record.int("ties")
+                    )
+                },
+                record = playoff.obj("record")?.let { record ->
+                    WLTRecord(
+                        raw = record,
+                        losses = record.int("losses"),
+                        wins = record.int("wins"),
+                        ties = record.int("ties")
+                    )
+                },
+                status = playoff.string("status"),
+                playoff_average = playoff.int("playoff_average")
+            )
+        },
         alliance_status_str = response.string("alliance_status_str"),
         playoff_status_str = response.string("playoff_status_str"),
         overall_status_str = response.string("overall_status_str"),
@@ -440,7 +497,15 @@ suspend fun TBA.getEvent(
         name = response.string("name"),
         event_code = response.string("event_code"),
         event_type = response.int("event_type"),
-        district = null,
+        district = response.obj("district")?.let { district ->
+            DistrictList(
+                raw = district,
+                abbreviation = district.string("abbreviation"),
+                display_name = district.string("display_name"),
+                key = district.string("key"),
+                year = district.int("year")
+            )
+        },
         city = response.string("city"),
         state_prov = response.string("state_prov"),
         country = response.string("country"),
@@ -482,7 +547,15 @@ suspend fun TBA.getEventSimple(
         name = response.string("name"),
         event_code = response.string("event_code"),
         event_type = response.int("event_type"),
-        district = null,
+        district = response.obj("district")?.let { district ->
+            DistrictList(
+                raw = district,
+                abbreviation = district.string("abbreviation"),
+                display_name = district.string("display_name"),
+                key = district.string("key"),
+                year = district.int("year")
+            )
+        },
         city = response.string("city"),
         state_prov = response.string("state_prov"),
         country = response.string("country"),
