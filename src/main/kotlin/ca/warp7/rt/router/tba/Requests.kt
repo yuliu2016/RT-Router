@@ -11,6 +11,14 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import java.io.StringReader
 
+private var authKey = ConfigSystem.getTBAKey()
+
+fun TBA.hasKey() = authKey == null
+
+fun TBA.setKey(key: String) {
+    authKey = key
+}
+
 private suspend fun TBA.getParsed(requestURL: String): JsonBase {
     val response = Fuel
         .get("http://www.thebluealliance.com/api/v3$requestURL")
@@ -28,8 +36,8 @@ internal suspend fun TBA.getArray(requestURL: String): JsonArray<*> {
 }
 
 internal inline fun <T> JsonArray<*>.mapToList(action: (JsonObject) -> T): List<T> {
-    val result = ArrayList<T>(size)
-    for (i in 0 until size) result[i] = action(get(i) as JsonObject)
+    val result = ArrayList<T>()
+    for (i in 0 until size) result.add(action(get(i) as JsonObject))
     return result
 }
 
