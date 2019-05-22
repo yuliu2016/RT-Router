@@ -16,11 +16,12 @@ header = """@file:Suppress("unused", "SpellCheckingInspection", "KDocUnresolvedR
 
 package ca.warp7.rt.router.tba
 
+import com.beust.klaxon.JsonObject
 
 /**
  * Represents Alliance Data
  */
-class Alliances<T>(
+data class Alliances<T>(
 
     /**
      * The Blue Alliance
@@ -41,12 +42,16 @@ template = """
  * {des}
  */
 
-class {clz}(
+data class {clz}(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>{dat}
-)"""
+    val raw: JsonObject{dat}
+){{
+    override fun toString(): String {{
+        return raw.toJsonString(true)
+    }}
+}}"""
 
 t2 = """,
 

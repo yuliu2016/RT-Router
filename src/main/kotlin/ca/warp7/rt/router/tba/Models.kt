@@ -2,11 +2,12 @@
 
 package ca.warp7.rt.router.tba
 
+import com.beust.klaxon.JsonObject
 
 /**
  * Represents Alliance Data
  */
-class Alliances<T>(
+data class Alliances<T>(
 
     /**
      * The Blue Alliance
@@ -26,11 +27,11 @@ class Alliances<T>(
  * No description available
  */
 
-class APIStatus(
+data class APIStatus(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Year of the current FRC season.
@@ -61,7 +62,11 @@ class APIStatus(
      * No description available
      */
     val android: APIStatusAppVersion?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -70,11 +75,11 @@ class APIStatus(
  * No description available
  */
 
-class APIStatusAppVersion(
+data class APIStatusAppVersion(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Internal use - Minimum application version required to correctly connect and process data.
@@ -85,7 +90,11 @@ class APIStatusAppVersion(
      * Internal use - Latest application version available.
      */
     val latest_app_version: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -94,11 +103,11 @@ class APIStatusAppVersion(
  * No description available
  */
 
-class TeamSimple(
+data class TeamSimple(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA team key with the format `frcXXXX` with `XXXX` representing the team number.
@@ -134,7 +143,11 @@ class TeamSimple(
      * Country of team derived from parsing the address registered with FIRST.
      */
     val country: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -143,11 +156,11 @@ class TeamSimple(
  * No description available
  */
 
-class Team(
+data class Team(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA team key with the format `frcXXXX` with `XXXX` representing the team number.
@@ -238,7 +251,11 @@ class Team(
      * Location of the team's home championship each year as a key-value pair. The year (as a string) is the key, and the city is the value.
      */
     val home_championship: Map<String, Any?>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -247,11 +264,11 @@ class Team(
  * No description available
  */
 
-class TeamRobot(
+data class TeamRobot(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Year this robot competed in.
@@ -272,7 +289,11 @@ class TeamRobot(
      * TBA team key for this robot.
      */
     val team_key: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -281,11 +302,11 @@ class TeamRobot(
  * No description available
  */
 
-class EventSimple(
+data class EventSimple(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA event key with the format yyyy[EVENT_CODE], where yyyy is the year, and EVENT_CODE is the event code of the event.
@@ -341,7 +362,11 @@ class EventSimple(
      * Year the event data is for.
      */
     val year: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -350,11 +375,11 @@ class EventSimple(
  * No description available
  */
 
-class Event(
+data class Event(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA event key with the format yyyy[EVENT_CODE], where yyyy is the year, and EVENT_CODE is the event code of the event.
@@ -505,7 +530,11 @@ class Event(
      * String representation of the `playoff_type`, or null.
      */
     val playoff_type_string: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -514,11 +543,11 @@ class Event(
  * No description available
  */
 
-class TeamEventStatus(
+data class TeamEventStatus(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -559,7 +588,11 @@ class TeamEventStatus(
      * TBA match key for the last match the team played in at this event, or null.
      */
     val last_match_key: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -568,11 +601,11 @@ class TeamEventStatus(
  * No description available
  */
 
-class TeamEventStatusRank(
+data class TeamEventStatusRank(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Number of teams ranked.
@@ -593,7 +626,11 @@ class TeamEventStatusRank(
      * No description available
      */
     val status: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -602,11 +639,11 @@ class TeamEventStatusRank(
  * No description available
  */
 
-class TeamEventStatusAlliance(
+data class TeamEventStatusAlliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Alliance name, may be null.
@@ -627,7 +664,11 @@ class TeamEventStatusAlliance(
      * Order the team was picked in the alliance from 0-2, with 0 being alliance captain.
      */
     val pick: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -636,11 +677,11 @@ class TeamEventStatusAlliance(
  * Backup status, may be null.
  */
 
-class TeamEventStatusAllianceBackup(
+data class TeamEventStatusAllianceBackup(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA key for the team replaced by the backup.
@@ -651,7 +692,11 @@ class TeamEventStatusAllianceBackup(
      * TBA key for the backup team called in.
      */
     val _in: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -660,11 +705,11 @@ class TeamEventStatusAllianceBackup(
  * Playoff status for this team, may be null if the team did not make playoffs, or playoffs have not begun.
  */
 
-class TeamEventStatusPlayoff(
+data class TeamEventStatusPlayoff(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * The highest playoff level the team reached.
@@ -690,7 +735,11 @@ class TeamEventStatusPlayoff(
      * The average match score during playoffs. Year specific. May be null if not relevant for a given year.
      */
     val playoff_average: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -699,11 +748,11 @@ class TeamEventStatusPlayoff(
  * No description available
  */
 
-class EventRanking(
+data class EventRanking(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * List of rankings at the event.
@@ -719,7 +768,11 @@ class EventRanking(
      * List of year-specific values provided in the `sort_orders` array for each team.
      */
     val sort_order_info: List<Map<String, Any?>>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -728,11 +781,11 @@ class EventRanking(
  * No description available
  */
 
-class EventDistrictPoints(
+data class EventDistrictPoints(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Points gained for each team at the event. Stored as a key-value pair with the team key as the key, and an object describing the points as its value.
@@ -743,7 +796,11 @@ class EventDistrictPoints(
      * Tiebreaker values for each team at the event. Stored as a key-value pair with the team key as the key, and an object describing the tiebreaker elements as its value.
      */
     val tiebreakers: Map<String, Any?>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -752,11 +809,11 @@ class EventDistrictPoints(
  * A year-specific event insight object expressed as a JSON string, separated in to `qual` and `playoff` fields. See also Event_Insights_2016, Event_Insights_2017, etc.
  */
 
-class EventInsights(
+data class EventInsights(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Inights for the qualification round of an event
@@ -767,7 +824,11 @@ class EventInsights(
      * Insights for the playoff round of an event
      */
     val playoff: Map<String, Any?>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -776,11 +837,11 @@ class EventInsights(
  * Insights for FIRST Stronghold qualification and elimination matches.
  */
 
-class EventInsights2016(
+data class EventInsights2016(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * For the Low Bar - An array with three values, number of times damaged, number of opportunities to damage, and percentage.
@@ -901,7 +962,11 @@ class EventInsights2016(
      * An array with three values, high score, match key from the match with the high score, and the name of the match.
      */
     val high_score: List<String>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -910,11 +975,11 @@ class EventInsights2016(
  * Insights for FIRST STEAMWORKS qualification and elimination matches.
  */
 
-class EventInsights2017(
+data class EventInsights2017(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Average foul score.
@@ -1075,7 +1140,11 @@ class EventInsights2017(
      * An array with three values, number of times a unicorn match (Win + kPa & Rotor Bonuses) occured, number of opportunities to have a unicorn match, and percentage.
      */
     val unicorn_matches: List<Double>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1084,11 +1153,11 @@ class EventInsights2017(
  * Insights for FIRST Power Up qualification and elimination matches.
  */
 
-class EventInsights2018(
+data class EventInsights2018(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * An array with three values, number of times auto quest was completed, number of opportunities to complete the auto quest, and percentage.
@@ -1274,7 +1343,11 @@ class EventInsights2018(
      * Average scale ownership percentage for the winning alliance during teleop.
      */
     val winning_scale_ownership_percentage_teleop: Double?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1283,11 +1356,11 @@ class EventInsights2018(
  * OPR, DPR, and CCWM for teams at the event.
  */
 
-class EventOPRs(
+data class EventOPRs(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * A key-value pair with team key (eg `frc254`) as key and OPR as value.
@@ -1303,7 +1376,11 @@ class EventOPRs(
      * A key-value pair with team key (eg `frc254`) as key and CCWM as value.
      */
     val ccwms: Map<String, Any?>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1312,12 +1389,16 @@ class EventOPRs(
  * JSON Object containing prediction information for the event. Contains year-specific information and is subject to change.
  */
 
-class EventPredictions(
+data class EventPredictions(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>
-)
+    val raw: JsonObject
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1326,11 +1407,11 @@ class EventPredictions(
  * No description available
  */
 
-class Webcast(
+data class Webcast(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Type of webcast, typically descriptive of the streaming provider.
@@ -1346,7 +1427,11 @@ class Webcast(
      * File identification as may be required for some types. May be null.
      */
     val file: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1355,11 +1440,11 @@ class Webcast(
  * No description available
  */
 
-class MatchSimple(
+data class MatchSimple(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA match key with the format `yyyy[EVENT_CODE]_[COMP_LEVEL]m[MATCH_NUMBER]`, where `yyyy` is the year, and `EVENT_CODE` is the event code of the event, `COMP_LEVEL` is (qm, ef, qf, sf, f), and `MATCH_NUMBER` is the match number in the competition level. A set number may append the competition level if more than one match in required per set.
@@ -1410,7 +1495,11 @@ class MatchSimple(
      * UNIX timestamp (seconds since 1-Jan-1970 00:00:00) of actual match start time.
      */
     val actual_time: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1419,11 +1508,11 @@ class MatchSimple(
  * No description available
  */
 
-class Match(
+data class Match(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA match key with the format `yyyy[EVENT_CODE]_[COMP_LEVEL]m[MATCH_NUMBER]`, where `yyyy` is the year, and `EVENT_CODE` is the event code of the event, `COMP_LEVEL` is (qm, ef, qf, sf, f), and `MATCH_NUMBER` is the match number in the competition level. A set number may be appended to the competition level if more than one match in required per set.
@@ -1489,7 +1578,11 @@ class Match(
      * Array of video objects associated with this match.
      */
     val videos: List<Map<String, Any?>>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1498,11 +1591,11 @@ class Match(
  * No description available
  */
 
-class MatchAlliance(
+data class MatchAlliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Score for this alliance. Will be null or -1 for an unplayed match.
@@ -1523,7 +1616,11 @@ class MatchAlliance(
      * TBA team keys (eg `frc254`) of any disqualified teams.
      */
     val dq_team_keys: List<String>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1532,11 +1629,11 @@ class MatchAlliance(
  * See the 2015 FMS API documentation for a description of each value
  */
 
-class MatchScoreBreakdown2015(
+data class MatchScoreBreakdown2015(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -1557,7 +1654,11 @@ class MatchScoreBreakdown2015(
      * No description available
      */
     val coopertition_points: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1566,11 +1667,11 @@ class MatchScoreBreakdown2015(
  * No description available
  */
 
-class MatchScoreBreakdown2015Alliance(
+data class MatchScoreBreakdown2015Alliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -1691,7 +1792,11 @@ class MatchScoreBreakdown2015Alliance(
      * No description available
      */
     val robot_set: Boolean?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1700,11 +1805,11 @@ class MatchScoreBreakdown2015Alliance(
  * See the 2016 FMS API documentation for a description of each value.
  */
 
-class MatchScoreBreakdown2016(
+data class MatchScoreBreakdown2016(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -1715,7 +1820,11 @@ class MatchScoreBreakdown2016(
      * No description available
      */
     val red: MatchScoreBreakdown2016Alliance?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1724,11 +1833,11 @@ class MatchScoreBreakdown2016(
  * No description available
  */
 
-class MatchScoreBreakdown2016Alliance(
+data class MatchScoreBreakdown2016Alliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -1919,7 +2028,11 @@ class MatchScoreBreakdown2016Alliance(
      * No description available
      */
     val position5crossings: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1928,11 +2041,11 @@ class MatchScoreBreakdown2016Alliance(
  * See the 2017 FMS API documentation for a description of each value.
  */
 
-class MatchScoreBreakdown2017(
+data class MatchScoreBreakdown2017(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -1943,7 +2056,11 @@ class MatchScoreBreakdown2017(
      * No description available
      */
     val red: MatchScoreBreakdown2017Alliance?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -1952,11 +2069,11 @@ class MatchScoreBreakdown2017(
  * No description available
  */
 
-class MatchScoreBreakdown2017Alliance(
+data class MatchScoreBreakdown2017Alliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -2122,7 +2239,11 @@ class MatchScoreBreakdown2017Alliance(
      * No description available
      */
     val touchpadFar: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2131,11 +2252,11 @@ class MatchScoreBreakdown2017Alliance(
  * See the 2018 FMS API documentation for a description of each value.
  */
 
-class MatchScoreBreakdown2018(
+data class MatchScoreBreakdown2018(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -2146,7 +2267,11 @@ class MatchScoreBreakdown2018(
      * No description available
      */
     val red: MatchScoreBreakdown2018Alliance?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2155,11 +2280,11 @@ class MatchScoreBreakdown2018(
  * No description available
  */
 
-class MatchScoreBreakdown2018Alliance(
+data class MatchScoreBreakdown2018Alliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -2345,7 +2470,11 @@ class MatchScoreBreakdown2018Alliance(
      * Unofficial TBA-computed value of the FMS provided GameData given to the alliance teams at the start of the match. 3 Character String containing `L` and `R` only. The first character represents the near switch, the 2nd the scale, and the 3rd the far, opposing, switch from the alliance's perspective. An `L` in a position indicates the platform on the left will be lit for the alliance while an `R` will indicate the right platform will be lit for the alliance. See also [WPI Screen Steps](https://wpilib.screenstepslive.com/s/currentCS/m/getting_started/l/826278-2018-game-data-details).
      */
     val tba_gameData: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2356,11 +2485,11 @@ class MatchScoreBreakdown2018Alliance(
 *WARNING:* This model is currently under active development and may change at any time, including in breaking ways.
  */
 
-class MatchTimeseries2018(
+data class MatchTimeseries2018(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA event key with the format yyyy[EVENT_CODE], where yyyy is the year, and EVENT_CODE is the event code of the event.
@@ -2516,7 +2645,11 @@ class MatchTimeseries2018(
      * 1 if the red alliance owns their SWITCH, 0 if not.
      */
     val red_switch_owned: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2525,11 +2658,11 @@ class MatchTimeseries2018(
  * See the 2019 FMS API documentation for a description of each value. https://frcevents2.docs.apiary.io/#reference/match-results/score-details
  */
 
-class MatchScoreBreakdown2019(
+data class MatchScoreBreakdown2019(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -2540,7 +2673,11 @@ class MatchScoreBreakdown2019(
      * No description available
      */
     val red: MatchScoreBreakdown2019Alliance?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2549,11 +2686,11 @@ class MatchScoreBreakdown2019(
  * No description available
  */
 
-class MatchScoreBreakdown2019Alliance(
+data class MatchScoreBreakdown2019Alliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * No description available
@@ -2809,7 +2946,11 @@ class MatchScoreBreakdown2019Alliance(
      * No description available
      */
     val totalPoints: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2818,11 +2959,11 @@ class MatchScoreBreakdown2019Alliance(
  * The `Media` object contains a reference for most any media associated with a team or event on TBA.
  */
 
-class Media(
+data class Media(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA identifier for this media.
@@ -2858,7 +2999,11 @@ class Media(
      * The URL that leads to the full web page for the media, if one exists.
      */
     val view_url: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2867,11 +3012,11 @@ class Media(
  * No description available
  */
 
-class EliminationAlliance(
+data class EliminationAlliance(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Alliance name, may be null.
@@ -2897,7 +3042,11 @@ class EliminationAlliance(
      * No description available
      */
     val status: Map<String, Any?>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2906,11 +3055,11 @@ class EliminationAlliance(
  * No description available
  */
 
-class Award(
+data class Award(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * The name of the award as provided by FIRST. May vary for the same award type.
@@ -2936,7 +3085,11 @@ class Award(
      * The year this award was won.
      */
     val year: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2945,11 +3098,11 @@ class Award(
  * An `Award_Recipient` object represents the team and/or person who received an award at an event.
  */
 
-class AwardRecipient(
+data class AwardRecipient(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * The TBA team key for the team that was given the award. May be null.
@@ -2960,7 +3113,11 @@ class AwardRecipient(
      * The name of the individual given the award. May be null.
      */
     val awardee: String?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -2969,11 +3126,11 @@ class AwardRecipient(
  * No description available
  */
 
-class DistrictList(
+data class DistrictList(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * The short identifier for the district.
@@ -2994,7 +3151,11 @@ class DistrictList(
      * Year this district participated.
      */
     val year: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -3003,11 +3164,11 @@ class DistrictList(
  * Rank of a team in a district.
  */
 
-class DistrictRanking(
+data class DistrictRanking(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * TBA team key for the team.
@@ -3033,7 +3194,11 @@ class DistrictRanking(
      * List of events that contributed to the point total for the team.
      */
     val event_points: List<Map<String, Any?>>?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}
 
 
 /**
@@ -3042,11 +3207,11 @@ class DistrictRanking(
  * A Win-Loss-Tie record for a team, or an alliance.
  */
 
-class WLTRecord(
+data class WLTRecord(
     /**
      * Raw Data Map
      */
-    val raw: Map<String, Any?>,
+    val raw: JsonObject,
 
     /**
      * Number of losses.
@@ -3062,4 +3227,8 @@ class WLTRecord(
      * Number of ties.
      */
     val ties: Int?
-)
+){
+    override fun toString(): String {
+        return raw.toJsonString(true)
+    }
+}

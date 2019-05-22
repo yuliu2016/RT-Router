@@ -9,5 +9,4 @@ interface Operable {
     operator fun get(vararg x: Any): Operable
     operator fun set(k: Any, v: Any): Operable
     operator fun compareTo(x: Any): Int
-    fun letValue(f: (Any) -> Any): Operable
 }
