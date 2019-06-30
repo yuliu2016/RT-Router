@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `maven-publish`
-    kotlin("jvm") version "1.3.40"
+    kotlin("jvm") version "1.3.31"
     id("com.github.gmazzo.buildconfig") version "1.5.0"
 }
 
