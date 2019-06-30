@@ -7,4 +7,4 @@ install:
   - ./gradlew --version
 
 script:
-  - ./gradlew build --scan
+  - ./gradlew build --scan -s
