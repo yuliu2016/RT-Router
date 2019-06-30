@@ -5,3 +5,6 @@ install:
   - echo "tbaKey=$tbaKey" > gradle.properties
   - cat gradle.properties
   - ./gradlew --version
+
+script:
+  - ./gradlew build --scan
