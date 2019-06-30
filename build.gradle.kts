@@ -6,6 +6,7 @@ plugins {
     `maven-publish`
     kotlin("jvm") version "1.3.31"
     id("com.github.gmazzo.buildconfig") version "1.5.0"
+    id("com.gradle.build-scan") version "2.3"
 }
 
 val kProjectVersion = "0.0.1"
@@ -23,6 +24,11 @@ val kStorePath = "/$kRootDir/$kProjectVersion/"
 val kPropertiesFile = "router.properties"
 
 val kUserAgent = "${project.name} / $kProjectVersion"
+
+buildScan {
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    termsOfServiceAgree = "yes"
+}
 
 buildConfig {
     forClass(kBuildConfigPackage, kBuildConfigClass) {
